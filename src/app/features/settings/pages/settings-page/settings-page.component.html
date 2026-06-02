@@ -1,0 +1,83 @@
+<section class="settings-hero">
+  <div>
+    <span>Settings</span>
+    <h1>Tune the workspace experience without leaving the frontend.</h1>
+  </div>
+  <button type="button" (click)="settingsStore.toggleTheme()">
+    {{ settingsStore.settings().theme === 'dark' ? 'Switch to light' : 'Switch to dark' }}
+  </button>
+</section>
+
+<section class="settings-grid">
+  <app-ui-card class="settings-card profile-card">
+    <div class="avatar-large" aria-hidden="true">{{ settingsStore.settings().profileName.slice(0, 1).toUpperCase() }}</div>
+    <h2>Profile</h2>
+    <label>
+      <span>Name</span>
+      <input type="text" [ngModel]="settingsStore.settings().profileName" (ngModelChange)="updateName($event)" />
+    </label>
+    <label>
+      <span>Role</span>
+      <input type="text" [ngModel]="settingsStore.settings().profileRole" (ngModelChange)="updateRole($event)" />
+    </label>
+  </app-ui-card>
+
+  <app-ui-card class="settings-card">
+    <h2>Workspace</h2>
+    <label>
+      <span>Workspace name</span>
+      <input type="text" [ngModel]="settingsStore.settings().workspaceName" (ngModelChange)="updateWorkspace($event)" />
+    </label>
+    <div class="toggle-row">
+      <div>
+        <strong>Theme mode</strong>
+        <p>Dark by default, persisted locally.</p>
+      </div>
+      <button type="button" class="toggle" [class.light]="settingsStore.settings().theme === 'light'" (click)="settingsStore.toggleTheme()">
+        <span></span>
+      </button>
+    </div>
+  </app-ui-card>
+
+  <app-ui-card class="settings-card wide">
+    <h2>AI Preferences</h2>
+    <div class="field-row">
+      <label>
+        <span>Model</span>
+        <select [ngModel]="settingsStore.settings().model" (ngModelChange)="updateModel($event)">
+          @for (model of models; track model) {
+            <option [value]="model">{{ model }}</option>
+          }
+        </select>
+      </label>
+      <label>
+        <span>Response style</span>
+        <select [ngModel]="settingsStore.settings().responseStyle" (ngModelChange)="updateResponseStyle($event)">
+          @for (style of styles; track style) {
+            <option [value]="style">{{ style }}</option>
+          }
+        </select>
+      </label>
+    </div>
+
+    <label class="temperature">
+      <span>Temperature: {{ settingsStore.settings().temperature | number: '1.2-2' }}</span>
+      <input type="range" min="0" max="1" step="0.01" [ngModel]="settingsStore.settings().temperature" (ngModelChange)="updateTemperature($event)" />
+    </label>
+
+    <div class="model-cards">
+      @for (model of models; track model) {
+        <button type="button" [class.active]="model === settingsStore.settings().model" (click)="updateModel(model)">
+          <strong>{{ model }}</strong>
+          <span>
+            @switch (model) {
+              @case ('Aether Fast') { Low latency drafts }
+              @case ('Aether Pro') { Balanced workspace output }
+              @case ('Aether Reasoning') { Deeper analysis flows }
+            }
+          </span>
+        </button>
+      }
+    </div>
+  </app-ui-card>
+</section>

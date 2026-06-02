@@ -1,0 +1,43 @@
+<section class="page-hero">
+  <div>
+    <span>Prompt Library</span>
+    <h1>Reusable prompts for repeatable high-quality output.</h1>
+  </div>
+  <p>Filter by workflow, search by intent, then launch a prompt directly into a new chat.</p>
+</section>
+
+<section class="filters" aria-label="Prompt filters">
+  <label>
+    <span>Search prompts</span>
+    <input type="search" [ngModel]="search()" (ngModelChange)="setSearch($event)" placeholder="Search writing, coding, business..." />
+  </label>
+
+  <div class="category-tabs" role="tablist" aria-label="Prompt categories">
+    @for (item of categories; track item) {
+      <button type="button" [class.active]="item === category()" (click)="setCategory(item)">{{ item }}</button>
+    }
+  </div>
+</section>
+
+@if (filteredPrompts().length) {
+  <section class="prompt-grid" aria-label="Prompt templates">
+    @for (prompt of filteredPrompts(); track prompt.id) {
+      <app-ui-card [interactive]="true" class="prompt-card" [attr.data-accent]="prompt.accent">
+        <div class="card-topline">
+          <span>{{ prompt.category }}</span>
+          <i aria-hidden="true"></i>
+        </div>
+        <h2>{{ prompt.title }}</h2>
+        <p>{{ prompt.description }}</p>
+        <pre>{{ prompt.content }}</pre>
+        <button type="button" (click)="usePrompt(prompt.content)">Use prompt</button>
+      </app-ui-card>
+    }
+  </section>
+} @else {
+  <app-empty-state
+    eyebrow="No prompts"
+    title="No prompt matches that filter."
+    description="Try a broader search term or switch back to all categories."
+  />
+}

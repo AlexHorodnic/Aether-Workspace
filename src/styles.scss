@@ -1,1 +1,144 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  color-scheme: dark;
+  --color-bg: #0f0b14;
+  --color-bg-elevated: #171120;
+  --color-surface: #1d1528;
+  --color-surface-soft: #261c33;
+  --color-surface-glass: rgb(29 21 40 / 0.78);
+  --color-border: rgb(212 179 255 / 0.16);
+  --color-border-strong: rgb(212 179 255 / 0.28);
+  --color-primary: #b26cff;
+  --color-primary-hover: #c48dff;
+  --color-primary-soft: rgb(178 108 255 / 0.16);
+  --color-accent: #ff5fd2;
+  --color-accent-soft: rgb(255 95 210 / 0.14);
+  --color-amber: #ffbe5c;
+  --color-amber-soft: rgb(255 190 92 / 0.14);
+  --color-success: #68ffb0;
+  --color-success-soft: rgb(104 255 176 / 0.12);
+  --color-danger: #ff7b9c;
+  --color-danger-soft: rgb(255 123 156 / 0.13);
+  --color-text: #f7f2ff;
+  --color-text-muted: #b8accd;
+  --color-text-subtle: #81758f;
+  --gradient-brand: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  --gradient-amber: linear-gradient(135deg, var(--color-primary), var(--color-amber));
+  --gradient-panel: linear-gradient(145deg, color-mix(in srgb, var(--color-surface) 88%, transparent), color-mix(in srgb, var(--color-bg-elevated) 96%, transparent));
+  --radius-md: 0.85rem;
+  --radius-lg: 1.1rem;
+  --radius-xl: 1.45rem;
+  --shadow-soft: 0 1rem 2.8rem rgb(0 0 0 / 0.26);
+  --shadow-card: 0 1.5rem 4rem rgb(0 0 0 / 0.36), inset 0 1px 0 rgb(255 255 255 / 0.035);
+  --shadow-modal: 0 2.5rem 6rem rgb(0 0 0 / 0.62);
+  --shadow-glow: 0 0.9rem 3rem rgb(178 108 255 / 0.22);
+  --font-sans: 'Space Grotesk', 'Aptos Display', 'Segoe UI Variable Display', sans-serif;
+
+  --bg: var(--color-bg);
+  --surface-1: var(--color-bg-elevated);
+  --surface-2: var(--color-surface);
+  --surface-3: var(--color-surface-soft);
+  --text: var(--color-text);
+  --text-muted: var(--color-text-muted);
+  --text-subtle: var(--color-text-subtle);
+  --border-soft: var(--color-border);
+  --border-strong: var(--color-border-strong);
+  --accent: var(--color-primary);
+  --accent-2: var(--color-accent);
+  --success: var(--color-success);
+  --danger: var(--color-danger);
+  --focus: var(--color-primary-hover);
+
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-bg: #f6f0ea;
+  --color-bg-elevated: #fffaf3;
+  --color-surface: #fff7ee;
+  --color-surface-soft: #f1e6dc;
+  --color-surface-glass: rgb(255 250 243 / 0.84);
+  --color-border: rgb(77 45 105 / 0.16);
+  --color-border-strong: rgb(77 45 105 / 0.28);
+  --color-primary: #7c3aed;
+  --color-primary-hover: #6d28d9;
+  --color-primary-soft: rgb(124 58 237 / 0.13);
+  --color-accent: #c026d3;
+  --color-accent-soft: rgb(192 38 211 / 0.11);
+  --color-amber: #b7791f;
+  --color-amber-soft: rgb(183 121 31 / 0.13);
+  --color-success: #15803d;
+  --color-success-soft: rgb(21 128 61 / 0.1);
+  --color-danger: #b4234a;
+  --color-danger-soft: rgb(180 35 74 / 0.1);
+  --color-text: #1f1726;
+  --color-text-muted: #62536d;
+  --color-text-subtle: #8a7a93;
+  --shadow-soft: 0 1rem 2.8rem rgb(77 45 105 / 0.08);
+  --shadow-card: 0 1.5rem 4rem rgb(77 45 105 / 0.13), inset 0 1px 0 rgb(255 255 255 / 0.72);
+  --shadow-modal: 0 2.5rem 6rem rgb(77 45 105 / 0.28);
+  --shadow-glow: 0 0.9rem 3rem rgb(124 58 237 / 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 15% -8%, var(--color-primary-soft), transparent 32rem),
+    radial-gradient(circle at 88% 8%, var(--color-accent-soft), transparent 30rem),
+    var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px var(--color-primary-soft);
+}
+
+input,
+textarea,
+select {
+  caret-color: var(--color-primary);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 32%, transparent);
+}
+
+::-webkit-scrollbar {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 0.18rem solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-text-muted) 45%, transparent);
+  background-clip: content-box;
+}

@@ -1,0 +1,40 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 58%, transparent);
+  border-radius: var(--radius-md);
+  background: var(--gradient-brand);
+  color: #160b1f;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease, filter 150ms ease;
+  user-select: none;
+}
+
+:host(:hover) {
+  box-shadow: var(--shadow-glow);
+  filter: saturate(1.08);
+  transform: translateY(-1px);
+}
+
+:host(.secondary) {
+  border-color: var(--color-border);
+  background: var(--color-surface-soft);
+  color: var(--color-text);
+}
+
+:host(.ghost) {
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-text-muted);
+}
+
+:host(.danger) {
+  border-color: color-mix(in srgb, var(--color-danger) 35%, transparent);
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}

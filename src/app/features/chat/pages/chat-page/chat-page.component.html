@@ -1,0 +1,16 @@
+<div class="chat-layout">
+  <app-conversation-list />
+
+  <section class="chat-panel" aria-label="Chat workspace">
+    <header class="chat-header">
+      <div>
+        <span>Chat workspace</span>
+        <h1>{{ chatStore.selectedConversation()?.title ?? 'Aether assistant' }}</h1>
+      </div>
+      <p>Mocked AI responses stream locally and persist in your browser.</p>
+    </header>
+
+    <app-message-list [conversation]="chatStore.selectedConversation()" />
+    <app-message-composer />
+  </section>
+</div>

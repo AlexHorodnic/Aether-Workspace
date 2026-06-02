@@ -1,0 +1,29 @@
+@if (conversation(); as activeConversation) {
+  @if (activeConversation.messages.length) {
+    <div class="messages" aria-live="polite">
+      @for (message of activeConversation.messages; track message.id) {
+        <article class="message" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
+          <div class="bubble">
+            <span class="role">{{ message.role === 'user' ? 'You' : 'Aether' }}</span>
+            <p>{{ message.content }}</p>
+            @if (message.status === 'streaming') {
+              <span class="typing" aria-label="Aether is typing"><i></i><i></i><i></i></span>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  } @else {
+    <app-empty-state
+      eyebrow="New chat"
+      title="Start with a prompt, a question, or a messy idea."
+      description="Aether will stream a mocked response and keep the conversation in local storage."
+    />
+  }
+} @else {
+  <app-empty-state
+    eyebrow="Aether Chat"
+    title="No conversation selected."
+    description="Create a chat from the conversation panel or use a prompt template to begin."
+  />
+}

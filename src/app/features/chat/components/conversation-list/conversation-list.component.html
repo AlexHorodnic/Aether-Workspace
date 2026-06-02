@@ -1,0 +1,30 @@
+<div class="panel-head">
+  <div>
+    <span>Conversations</span>
+    <strong>{{ chatStore.conversations().length }} chats</strong>
+  </div>
+  <button type="button" (click)="createConversation()">New</button>
+</div>
+
+<div class="conversation-scroll">
+  @for (conversation of chatStore.conversations(); track conversation.id) {
+    <article
+      class="conversation"
+      [class.active]="conversation.id === chatStore.selectedConversationId()"
+    >
+      <button type="button" class="conversation-select" (click)="selectConversation(conversation.id)">
+        <span class="conversation-title">{{ conversation.title }}</span>
+        <small>{{ conversation.messages.length }} messages</small>
+      </button>
+      <span class="conversation-actions">
+        <button type="button" aria-label="Rename conversation" (click)="renameConversation(conversation.id, conversation.title, $event)">Rename</button>
+        <button type="button" aria-label="Delete conversation" (click)="deleteConversation(conversation.id, $event)">Delete</button>
+      </span>
+    </article>
+  } @empty {
+    <div class="no-chats">
+      <strong>No chats yet</strong>
+      <p>Create one or send your first message.</p>
+    </div>
+  }
+</div>

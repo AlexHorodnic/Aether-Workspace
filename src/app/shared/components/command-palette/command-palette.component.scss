@@ -1,0 +1,111 @@
+.palette-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgb(9 5 13 / 0.7);
+  backdrop-filter: blur(10px);
+}
+
+.palette {
+  position: fixed;
+  top: min(12vh, 6rem);
+  left: 50%;
+  z-index: 90;
+  width: min(43rem, calc(100vw - 1.5rem));
+  overflow: hidden;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-bg-elevated) 94%, transparent), var(--color-surface));
+  box-shadow: var(--shadow-modal), 0 0 5rem var(--color-primary-soft);
+  transform: translateX(-50%);
+}
+
+.palette-search {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  background: linear-gradient(90deg, var(--color-primary-soft), transparent 62%);
+}
+
+.palette-search span {
+  color: var(--color-amber);
+  font-size: 0.74rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.palette-search input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  outline: 0;
+}
+
+.palette-search input::placeholder { color: var(--color-text-subtle); }
+
+kbd {
+  border: 1px solid var(--color-border);
+  border-radius: 0.55rem;
+  padding: 0.25rem 0.45rem;
+  color: var(--color-text-muted);
+  background: var(--color-surface-soft);
+}
+
+.palette-list {
+  display: grid;
+  gap: 0.35rem;
+  max-height: min(27rem, 62vh);
+  overflow: auto;
+  padding: 0.55rem;
+}
+
+.palette-item {
+  display: grid;
+  grid-template-columns: 6.7rem 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  padding: 0.85rem;
+  background: transparent;
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.palette-item.active,
+.palette-item:hover {
+  border-color: var(--color-border);
+  background: color-mix(in srgb, var(--color-primary) 10%, var(--color-surface-soft));
+}
+
+.item-kind {
+  color: var(--color-text-subtle);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.item-copy {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.item-copy small,
+.palette-empty {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 560px) {
+  .palette { top: 0.75rem; }
+  .palette-item { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,71 @@
+<div class="workspace-shell">
+  <aside class="sidebar" [class.open]="sidebarOpen()" aria-label="Primary navigation">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">A</div>
+      <div>
+        <strong>Aether</strong>
+        <span>AI workspace</span>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      @for (item of navItems; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.path === '/chat' }"
+          (click)="closeSidebar()"
+        >
+          <span class="nav-icon" [attr.data-icon]="item.icon" aria-hidden="true"></span>
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-card">
+      <span>Workspace signal</span>
+      <strong>{{ currentConversation()?.messages?.length ?? 0 }} active messages</strong>
+      <p>Local-first AI workspace with mock streaming and persisted state.</p>
+    </div>
+  </aside>
+
+  @if (sidebarOpen()) {
+    <button class="drawer-backdrop" type="button" aria-label="Close navigation" (click)="closeSidebar()"></button>
+  }
+
+  <main class="workspace-main">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <button class="icon-button mobile-menu" type="button" aria-label="Open navigation" (click)="toggleSidebar()">
+          <span></span><span></span><span></span>
+        </button>
+
+        <div class="workspace-title">
+          <span>{{ settings().workspaceName }}</span>
+          <strong>{{ currentConversation()?.title ?? 'Ready for focused work' }}</strong>
+        </div>
+
+        <button class="global-search" type="button" (click)="openPalette()" aria-label="Open command palette">
+          <span>Search workspace...</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+
+        <div class="user-chip" aria-label="Current user">
+          <div class="avatar">{{ userInitials() }}</div>
+          <div>
+            <strong>{{ settings().profileName }}</strong>
+            <span>{{ settings().model }}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="route-surface">
+      <div class="route-container">
+        <router-outlet />
+      </div>
+    </section>
+  </main>
+
+  <app-command-palette />
+</div>

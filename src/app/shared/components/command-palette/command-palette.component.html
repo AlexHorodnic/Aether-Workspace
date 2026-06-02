@@ -1,0 +1,39 @@
+@if (open()) {
+  <div class="palette-backdrop" (click)="close()"></div>
+  <section class="palette" role="dialog" aria-modal="true" aria-label="Command palette">
+    <label class="palette-search">
+      <span>Search</span>
+      <input
+        #searchInput
+        type="text"
+        [ngModel]="query()"
+        (ngModelChange)="setQuery($event)"
+        placeholder="Find chats, prompts, and actions..."
+        aria-label="Command search"
+      />
+      <kbd>Esc</kbd>
+    </label>
+
+    <div class="palette-list" role="listbox" aria-label="Command results">
+      @for (item of filteredItems(); track item.id; let index = $index) {
+        <button
+          type="button"
+          class="palette-item"
+          [class.active]="index === activeIndex()"
+          (mouseenter)="setActive(index)"
+          (click)="runItem(item)"
+          role="option"
+          [attr.aria-selected]="index === activeIndex()"
+        >
+          <span class="item-kind">{{ item.kind }}</span>
+          <span class="item-copy">
+            <strong>{{ item.title }}</strong>
+            <small>{{ item.hint }}</small>
+          </span>
+        </button>
+      } @empty {
+        <p class="palette-empty">No matching command found.</p>
+      }
+    </div>
+  </section>
+}

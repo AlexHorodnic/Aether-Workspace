@@ -1,0 +1,47 @@
+<section class="knowledge-grid">
+  <div class="knowledge-copy">
+    <span>Knowledge Base</span>
+    <h1>Organize source material before asking the AI to reason over it.</h1>
+    <p>Uploads are mocked on the frontend. File metadata, progress, and indexed states persist in local storage.</p>
+  </div>
+
+  <label
+    class="drop-zone"
+    [class.dragging]="dragging()"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave()"
+    (drop)="onDrop($event)"
+  >
+    <input type="file" multiple (change)="onFileSelect($event)" />
+    <strong>Drop files here</strong>
+    <span>or click to browse documents, notes, and PDFs</span>
+  </label>
+</section>
+
+@if (knowledgeStore.files().length) {
+  <section class="file-grid" aria-label="Uploaded files">
+    @for (file of knowledgeStore.files(); track file.id) {
+      <app-ui-card class="file-card">
+        <div class="file-icon" aria-hidden="true">{{ file.name.slice(0, 1).toUpperCase() }}</div>
+        <div class="file-main">
+          <h2>{{ file.name }}</h2>
+          <p>{{ file.type }} · {{ formatSize(file.size) }}</p>
+          <div class="progress-track" aria-label="Upload progress">
+            <span [style.width.%]="file.progress"></span>
+          </div>
+          <div class="file-meta">
+            <strong [class.indexed]="file.status === 'Indexed'">{{ file.status }}</strong>
+            <small>{{ file.progress }}%</small>
+          </div>
+        </div>
+        <button type="button" (click)="knowledgeStore.removeFile(file.id)" aria-label="Remove file">Remove</button>
+      </app-ui-card>
+    }
+  </section>
+} @else {
+  <app-empty-state
+    eyebrow="No files"
+    title="Your knowledge base is empty."
+    description="Upload sample documents to demonstrate file organization, progress states, and local persistence."
+  />
+}

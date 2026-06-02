@@ -1,0 +1,100 @@
+:host {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg-elevated);
+  overflow: hidden;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  background: linear-gradient(90deg, var(--color-primary-soft), transparent);
+}
+
+.panel-head div { display: grid; gap: 0.15rem; }
+.panel-head span,
+.conversation small,
+.no-chats p { color: var(--color-text-muted); }
+
+.panel-head button {
+  border: 1px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
+  border-radius: 999px;
+  padding: 0.55rem 0.85rem;
+  background: var(--gradient-brand);
+  color: #160b1f;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.conversation-scroll {
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+  min-height: 0;
+  overflow: auto;
+  padding: 0.75rem;
+}
+
+.conversation {
+  display: grid;
+  gap: 0.35rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  overflow: hidden;
+}
+
+.conversation:hover,
+.conversation.active {
+  border-color: var(--color-border);
+  background: color-mix(in srgb, var(--color-primary) 9%, var(--color-surface));
+}
+
+.conversation.active { box-shadow: inset 3px 0 0 var(--color-accent); }
+.conversation-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 750; }
+
+.conversation-select {
+  display: grid;
+  gap: 0.35rem;
+  width: 100%;
+  border: 0;
+  padding: 0.85rem;
+  background: transparent;
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.conversation-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0 0.85rem 0.75rem;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.conversation:hover .conversation-actions,
+.conversation:focus-within .conversation-actions { opacity: 1; }
+
+.conversation-actions button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  font-size: 0.72rem;
+}
+
+.no-chats { display: grid; gap: 0.35rem; padding: 1rem; color: var(--color-text); }
+
+@media (max-width: 900px) {
+  :host { min-height: 13rem; }
+  .conversation-scroll { grid-auto-flow: column; grid-auto-columns: minmax(13rem, 16rem); overflow-x: auto; }
+}

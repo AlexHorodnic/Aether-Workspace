@@ -1,0 +1,18 @@
+:host {
+  display: block;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--gradient-panel);
+  box-shadow: var(--shadow-soft);
+}
+
+:host(.is-interactive) {
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+:host(.is-interactive):hover {
+  border-color: var(--color-border-strong);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--color-surface-soft) 72%, transparent), var(--color-bg-elevated));
+  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
+}

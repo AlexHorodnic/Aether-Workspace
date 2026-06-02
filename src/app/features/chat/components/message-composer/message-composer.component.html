@@ -1,0 +1,15 @@
+<div class="composer-shell">
+  <label for="chat-message">Message Aether</label>
+  <textarea
+    id="chat-message"
+    rows="3"
+    [ngModel]="draft()"
+    (ngModelChange)="updateDraft($event)"
+    (keydown)="handleKeydown($event)"
+    placeholder="Ask for a plan, paste notes, or use Shift+Enter for a new line..."
+  ></textarea>
+  <div class="composer-actions">
+    <span>Enter to send · Shift+Enter for newline</span>
+    <button type="button" [disabled]="!draft().trim()" (click)="send()">Send</button>
+  </div>
+</div>
