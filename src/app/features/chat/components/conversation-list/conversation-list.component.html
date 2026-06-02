@@ -13,7 +13,11 @@
       [class.active]="conversation.id === chatStore.selectedConversationId()"
     >
       <button type="button" class="conversation-select" (click)="selectConversation(conversation.id)">
-        <span class="conversation-title">{{ conversation.title }}</span>
+        <span class="conversation-topline">
+          <strong class="conversation-title">{{ conversation.title }}</strong>
+          <time [attr.datetime]="conversation.updatedAt">{{ timestamp(conversation.updatedAt) }}</time>
+        </span>
+        <span class="conversation-preview">{{ preview(conversation) }}</span>
         <small>{{ conversation.messages.length }} messages</small>
       </button>
       <span class="conversation-actions">
@@ -23,8 +27,10 @@
     </article>
   } @empty {
     <div class="no-chats">
-      <strong>No chats yet</strong>
-      <p>Create one or send your first message.</p>
+      <span aria-hidden="true"></span>
+      <strong>Your studio is quiet</strong>
+      <p>Create a conversation to start streaming local AI responses.</p>
+      <button type="button" (click)="createConversation()">Start new chat</button>
     </div>
   }
 </div>

@@ -1,12 +1,14 @@
 :host {
   display: block;
-  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 .workspace-shell {
   display: grid;
   grid-template-columns: 18.5rem minmax(0, 1fr);
-  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 .sidebar {
@@ -40,7 +42,6 @@
   background: var(--gradient-brand);
   color: #160b1f;
   font-weight: 950;
-  box-shadow: 0 0.8rem 2rem var(--color-primary-soft);
 }
 
 .brand-mark { width: 2.75rem; height: 2.75rem; }
@@ -48,7 +49,6 @@
 
 .brand span,
 .user-chip span,
-.workspace-title span,
 .sidebar-card p { color: var(--color-text-muted); }
 
 .nav-links { display: grid; align-content: start; gap: 0.38rem; }
@@ -61,7 +61,6 @@
   border-radius: var(--radius-lg);
   color: var(--color-text-muted);
   text-decoration: none;
-  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
 }
 
 .nav-links a:hover,
@@ -95,7 +94,7 @@
   text-transform: uppercase;
 }
 
-.workspace-main { min-width: 0; display: grid; grid-template-rows: auto 1fr; }
+.workspace-main { min-width: 0; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); }
 
 .topbar {
   position: sticky;
@@ -107,22 +106,20 @@
 }
 
 .topbar-inner {
+  position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
-  width: min(100%, 100rem);
+  width: min(100%, 93.75rem);
   min-height: 4.7rem;
   margin-inline: auto;
   padding: 0.85rem 1.25rem;
 }
 
-.workspace-title { display: grid; gap: 0.15rem; min-width: 11rem; }
-.workspace-title strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
 .global-search {
-  flex: 1;
   justify-content: space-between;
-  max-width: 36rem;
+  width: min(100%, 36rem);
   min-height: 2.75rem;
   padding: 0 0.9rem;
   border: 1px solid var(--color-border);
@@ -135,6 +132,10 @@
 .global-search kbd { color: var(--color-amber); }
 
 .user-chip {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
   gap: 0.7rem;
   padding: 0.35rem 0.5rem;
   border: 1px solid var(--color-border);
@@ -143,9 +144,10 @@
 }
 
 .user-chip div:last-child { display: grid; gap: 0.05rem; padding-right: 0.35rem; }
-.route-surface { min-width: 0; min-height: 0; padding: 1rem; }
+.route-surface { min-width: 0; min-height: 0; overflow: auto; padding: 1rem; }
 .route-container {
-  width: min(100%, 100rem);
+  width: min(100%, 93.75rem);
+  height: 100%;
   margin-inline: auto;
 }
 .mobile-menu,
@@ -170,14 +172,15 @@
   }
   .sidebar.open { transform: translateX(0); }
   .drawer-backdrop { display: block; position: fixed; inset: 0; z-index: 50; border: 0; background: rgb(9 5 13 / 0.62); }
-  .mobile-menu { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; }
+  .mobile-menu { position: absolute; left: 1.25rem; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; }
   .mobile-menu span { width: 1rem; height: 2px; margin: 2px 0; background: var(--color-text); }
   .user-chip div:last-child { display: none; }
 }
 
 @media (max-width: 680px) {
-  .topbar-inner { gap: 0.65rem; padding: 0.75rem; }
-  .workspace-title { min-width: 0; flex: 1; }
+  .topbar-inner { justify-content: space-between; gap: 0.65rem; padding: 0.75rem; }
+  .mobile-menu { position: static; }
+  .user-chip { position: static; transform: none; }
   .global-search { flex: initial; width: 2.75rem; padding: 0; justify-content: center; }
   .global-search span { display: none; }
   .global-search kbd { font-size: 0; }

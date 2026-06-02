@@ -40,14 +40,9 @@
           <span></span><span></span><span></span>
         </button>
 
-        <div class="workspace-title">
-          <span>{{ settings().workspaceName }}</span>
-          <strong>{{ currentConversation()?.title ?? 'Ready for focused work' }}</strong>
-        </div>
-
         <button class="global-search" type="button" (click)="openPalette()" aria-label="Open command palette">
-          <span>Search workspace...</span>
-          <kbd>Ctrl K</kbd>
+          <span>Search conversations, prompts, and files...</span>
+          <kbd>Ctrl/Cmd K</kbd>
         </button>
 
         <div class="user-chip" aria-label="Current user">

@@ -3,6 +3,11 @@
     <div class="messages" aria-live="polite">
       @for (message of activeConversation.messages; track message.id) {
         <article class="message" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
+          @if (message.role === 'assistant') {
+            <span class="avatar ai-avatar">
+              <app-ai-avatar />
+            </span>
+          }
           <div class="bubble">
             <span class="role">{{ message.role === 'user' ? 'You' : 'Aether' }}</span>
             <p>{{ message.content }}</p>
@@ -10,20 +15,15 @@
               <span class="typing" aria-label="Aether is typing"><i></i><i></i><i></i></span>
             }
           </div>
+          @if (message.role === 'user') {
+            <span class="avatar user-avatar" aria-label="User avatar">{{ userInitials() }}</span>
+          }
         </article>
       }
     </div>
   } @else {
-    <app-empty-state
-      eyebrow="New chat"
-      title="Start with a prompt, a question, or a messy idea."
-      description="Aether will stream a mocked response and keep the conversation in local storage."
-    />
+    <app-chat-welcome />
   }
 } @else {
-  <app-empty-state
-    eyebrow="Aether Chat"
-    title="No conversation selected."
-    description="Create a chat from the conversation panel or use a prompt template to begin."
-  />
+  <app-chat-welcome />
 }

@@ -3,9 +3,10 @@ import { ChangeDetectionStrategy, Component, ElementRef, HostListener, ViewChild
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ChatStoreService } from '../../../core/services/chat-store.service';
+import { KnowledgeStoreService } from '../../../core/services/knowledge-store.service';
 import { PROMPT_TEMPLATES } from '../../../features/prompts/data/prompt-templates';
 
-type CommandKind = 'Action' | 'Conversation' | 'Prompt';
+type CommandKind = 'Action' | 'Conversation' | 'Prompt' | 'File';
 
 interface CommandItem {
   id: string;
@@ -27,6 +28,7 @@ export class CommandPaletteComponent {
 
   private readonly router = inject(Router);
   private readonly chatStore = inject(ChatStoreService);
+  private readonly knowledgeStore = inject(KnowledgeStoreService);
 
   readonly open = signal(false);
   readonly query = signal('');
@@ -163,6 +165,14 @@ export class CommandPaletteComponent {
       },
     }));
 
-    return [...actions, ...conversations, ...prompts];
+    const files = this.knowledgeStore.files().map((file): CommandItem => ({
+      id: `file-${file.id}`,
+      title: file.name,
+      hint: `${file.status} knowledge file`,
+      kind: 'File',
+      run: () => void this.router.navigate(['/knowledge']),
+    }));
+
+    return [...actions, ...conversations, ...prompts, ...files];
   }
 }

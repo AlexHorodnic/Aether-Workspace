@@ -21,9 +21,12 @@
 .panel-head div { display: grid; gap: 0.15rem; }
 .panel-head span,
 .conversation small,
+.conversation-preview,
+time,
 .no-chats p { color: var(--color-text-muted); }
 
-.panel-head button {
+.panel-head button,
+.no-chats button {
   border: 1px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
   border-radius: 999px;
   padding: 0.55rem 0.85rem;
@@ -36,7 +39,7 @@
 .conversation-scroll {
   display: grid;
   align-content: start;
-  gap: 0.45rem;
+  gap: 0.48rem;
   min-height: 0;
   overflow: auto;
   padding: 0.75rem;
@@ -44,10 +47,9 @@
 
 .conversation {
   display: grid;
-  gap: 0.35rem;
   border: 1px solid transparent;
   border-radius: var(--radius-lg);
-  background: transparent;
+  background: color-mix(in srgb, var(--color-surface) 55%, transparent);
   overflow: hidden;
 }
 
@@ -58,24 +60,41 @@
 }
 
 .conversation.active { box-shadow: inset 3px 0 0 var(--color-accent); }
-.conversation-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 750; }
 
 .conversation-select {
   display: grid;
-  gap: 0.35rem;
+  gap: 0.36rem;
   width: 100%;
   border: 0;
-  padding: 0.85rem;
+  padding: 0.82rem 0.86rem;
   background: transparent;
   color: var(--color-text);
   text-align: left;
   cursor: pointer;
 }
 
+.conversation-topline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.conversation-title,
+.conversation-preview {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conversation-title { font-weight: 800; }
+time { font-size: 0.7rem; }
+.conversation-preview { font-size: 0.8rem; line-height: 1.35; }
+
 .conversation-actions {
   display: flex;
   gap: 0.5rem;
-  padding: 0 0.85rem 0.75rem;
+  padding: 0 0.86rem 0.72rem;
   opacity: 0;
   transition: opacity 150ms ease;
 }
@@ -92,9 +111,27 @@
   font-size: 0.72rem;
 }
 
-.no-chats { display: grid; gap: 0.35rem; padding: 1rem; color: var(--color-text); }
+.no-chats {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+  padding: 1rem;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-primary-soft);
+  color: var(--color-text);
+}
 
-@media (max-width: 900px) {
+.no-chats span {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: var(--gradient-brand);
+}
+
+.no-chats p { margin: 0; line-height: 1.5; }
+
+@media (max-width: 980px) {
   :host { min-height: 13rem; }
-  .conversation-scroll { grid-auto-flow: column; grid-auto-columns: minmax(13rem, 16rem); overflow-x: auto; }
+  .conversation-scroll { grid-auto-flow: column; grid-auto-columns: minmax(16rem, 19rem); overflow-x: auto; }
 }

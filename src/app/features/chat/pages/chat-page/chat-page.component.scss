@@ -1,20 +1,21 @@
 :host {
   display: block;
-  width: min(100%, 87.5rem);
-  height: calc(100dvh - 6.7rem);
-  min-height: 34rem;
+  width: min(100%, 93.75rem);
+  height: 100%;
+  min-height: 0;
   margin-inline: auto;
 }
 
 .chat-layout {
   display: grid;
-  grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr);
-  gap: 1rem;
+  grid-template-columns: minmax(19rem, 21rem) minmax(0, 1fr);
+  gap: 0.9rem;
   height: 100%;
   min-height: 0;
 }
 
 .chat-panel {
+  position: relative;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   min-width: 0;
@@ -22,8 +23,20 @@
   overflow: hidden;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  background: var(--gradient-panel);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--color-surface) 86%, transparent), color-mix(in srgb, var(--color-bg-elevated) 96%, transparent));
   box-shadow: var(--shadow-card);
+}
+
+.chat-panel::before {
+  content: '';
+  position: absolute;
+  inset: 4rem 8% auto auto;
+  width: 26rem;
+  height: 16rem;
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  filter: blur(42px);
+  pointer-events: none;
 }
 
 .chat-header {
@@ -32,7 +45,7 @@
   align-items: end;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.1rem 1.25rem;
+  padding: 0.85rem 1rem;
   border-bottom: 1px solid var(--color-border);
   overflow: hidden;
 }
@@ -63,23 +76,30 @@ h1,
 p { margin: 0; }
 
 h1 {
-  font-size: clamp(1.35rem, 3vw, 1.9rem);
+  max-width: 52rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
   line-height: 1.05;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.04em;
 }
 
 p {
-  max-width: 25rem;
+  flex: 0 0 auto;
   color: var(--color-text-muted);
+  font-size: 0.88rem;
   line-height: 1.6;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 980px) {
   :host { height: auto; min-height: 0; }
   .chat-layout { grid-template-columns: 1fr; height: auto; }
   .chat-panel { min-height: 70dvh; }
 }
 
 @media (max-width: 620px) {
+  .chat-layout { gap: 0.75rem; }
   .chat-header { align-items: start; flex-direction: column; }
+  h1 { white-space: normal; }
 }
