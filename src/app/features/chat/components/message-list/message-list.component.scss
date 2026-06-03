@@ -109,9 +109,27 @@ p {
 }
 
 @media (max-width: 620px) {
-  .messages { gap: 0.65rem; padding: 0.8rem; }
+  .messages { gap: 0.7rem; padding: 0.95rem 0.78rem 0.8rem; }
   .message { gap: 0.5rem; }
-  .avatar { width: 1.8rem; height: 1.8rem; font-size: 0.66rem; }
-  .bubble { max-width: calc(100% - 2.3rem); }
-  .message.user .bubble { min-width: min(12rem, 86%); }
+  .avatar {
+    width: 1.8rem;
+    height: 1.8rem;
+    border-color: color-mix(in srgb, var(--color-border) 46%, transparent);
+    font-size: 0.66rem;
+  }
+  .bubble {
+    max-width: calc(100% - 2.3rem);
+    border-color: transparent;
+    box-shadow: 0 0.45rem 1.3rem rgb(0 0 0 / 0.1);
+  }
+  .message.user .bubble {
+    min-width: min(12rem, 86%);
+    border-color: transparent;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 16%, var(--color-surface)), color-mix(in srgb, var(--color-primary) 7%, var(--color-surface)));
+  }
+  .message.assistant .bubble {
+    background: color-mix(in srgb, var(--color-bg-elevated) 78%, transparent);
+    box-shadow: none;
+  }
+  .role { color: color-mix(in srgb, var(--color-amber) 82%, var(--color-text-muted)); }
 }

@@ -1,10 +1,12 @@
-<div class="panel-head">
-  <div>
-    <span>Conversations</span>
-    <strong>{{ chatStore.conversations().length }} chats</strong>
+@if (showHeader()) {
+  <div class="panel-head">
+    <div>
+      <span>Conversations</span>
+      <strong>{{ chatStore.conversations().length }} chats</strong>
+    </div>
+    <button type="button" (click)="createConversation()">New</button>
   </div>
-  <button type="button" (click)="createConversation()">New</button>
-</div>
+}
 
 <div class="conversation-scroll">
   @for (conversation of chatStore.conversations(); track conversation.id) {
@@ -34,3 +36,25 @@
     </div>
   }
 </div>
+
+<app-confirm-dialog
+  [open]="pendingDelete() !== null"
+  title="Delete conversation?"
+  description="This conversation will be permanently removed from your local workspace."
+  cancelLabel="Cancel"
+  confirmLabel="Delete"
+  (cancel)="cancelDelete()"
+  (confirm)="confirmDelete()"
+/>
+
+<app-text-dialog
+  [open]="pendingRename() !== null"
+  title="Rename conversation"
+  description="Update the title shown in your local chat history."
+  label="Conversation title"
+  cancelLabel="Cancel"
+  confirmLabel="Save"
+  [value]="pendingRename()?.title ?? ''"
+  (cancel)="cancelRename()"
+  (confirm)="confirmRename($event)"
+/>

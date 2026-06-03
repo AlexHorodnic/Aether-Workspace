@@ -121,6 +121,12 @@ select:focus-visible {
   box-shadow: 0 0 0 5px var(--color-primary-soft);
 }
 
+.global-search:focus-visible {
+  border-color: color-mix(in srgb, var(--color-primary) 42%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 8%, var(--color-surface));
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
+}
+
 input,
 textarea,
 select {
@@ -131,14 +137,33 @@ select {
   background: color-mix(in srgb, var(--color-accent) 32%, transparent);
 }
 
+* {
+  scrollbar-color: color-mix(in srgb, var(--color-primary) 46%, var(--color-surface-soft)) transparent;
+  scrollbar-width: thin;
+}
+
 ::-webkit-scrollbar {
-  width: 0.7rem;
-  height: 0.7rem;
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
+  min-height: 2.5rem;
   border: 0.18rem solid transparent;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--color-text-muted) 45%, transparent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-primary) 52%, var(--color-surface-soft)), color-mix(in srgb, var(--color-accent) 34%, var(--color-surface-soft)));
   background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--color-primary-hover), color-mix(in srgb, var(--color-accent) 58%, var(--color-surface-soft)));
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
 }

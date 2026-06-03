@@ -1,7 +1,29 @@
 <div class="workspace-shell">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button class="icon-button mobile-menu" type="button" aria-label="Open navigation" (click)="toggleSidebar()">
+        <svg lucideMenu size="18" aria-hidden="true"></svg>
+      </button>
+
+      <button class="global-search" type="button" (click)="openPalette()" aria-label="Open command palette">
+        <svg lucideSearch size="16" aria-hidden="true"></svg>
+        <span class="search-label">Search conversations, prompts, and files...</span>
+        <span class="search-label-mobile">Search</span>
+        <kbd>Ctrl/Cmd K</kbd>
+      </button>
+
+      <div class="user-chip" aria-label="Current user">
+        <div class="avatar">{{ userInitials() }}</div>
+        <div>
+          <strong>{{ settings().profileName }}</strong>
+          <span>{{ settings().model }}</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
   <aside class="sidebar" [class.open]="sidebarOpen()" aria-label="Primary navigation">
     <div class="brand">
-      <div class="brand-mark" aria-hidden="true">A</div>
       <div>
         <strong>Aether</strong>
         <span>AI workspace</span>
@@ -16,7 +38,20 @@
           [routerLinkActiveOptions]="{ exact: item.path === '/chat' }"
           (click)="closeSidebar()"
         >
-          <span class="nav-icon" [attr.data-icon]="item.icon" aria-hidden="true"></span>
+          @switch (item.icon) {
+            @case ('chat') {
+              <svg lucideMessageSquare size="17" aria-hidden="true"></svg>
+            }
+            @case ('spark') {
+              <svg lucideSparkles size="17" aria-hidden="true"></svg>
+            }
+            @case ('files') {
+              <svg lucideFolderOpen size="17" aria-hidden="true"></svg>
+            }
+            @default {
+              <svg lucideSettings size="17" aria-hidden="true"></svg>
+            }
+          }
           {{ item.label }}
         </a>
       }
@@ -34,27 +69,6 @@
   }
 
   <main class="workspace-main">
-    <header class="topbar">
-      <div class="topbar-inner">
-        <button class="icon-button mobile-menu" type="button" aria-label="Open navigation" (click)="toggleSidebar()">
-          <span></span><span></span><span></span>
-        </button>
-
-        <button class="global-search" type="button" (click)="openPalette()" aria-label="Open command palette">
-          <span>Search conversations, prompts, and files...</span>
-          <kbd>Ctrl/Cmd K</kbd>
-        </button>
-
-        <div class="user-chip" aria-label="Current user">
-          <div class="avatar">{{ userInitials() }}</div>
-          <div>
-            <strong>{{ settings().profileName }}</strong>
-            <span>{{ settings().model }}</span>
-          </div>
-        </div>
-      </div>
-    </header>
-
     <section class="route-surface">
       <div class="route-container">
         <router-outlet />

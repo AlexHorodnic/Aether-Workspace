@@ -1,5 +1,5 @@
-<div class="chat-layout">
-  <app-conversation-list />
+﻿<div class="chat-layout">
+  <app-conversation-list class="desktop-conversations" />
 
   <section class="chat-panel" aria-label="Chat workspace">
     <header class="chat-header">
@@ -7,10 +7,34 @@
         <span>Aether Chat</span>
         <h1>{{ chatStore.selectedConversation()?.title ?? 'Aether assistant' }}</h1>
       </div>
-      <p>Local AI simulation · Saved in browser</p>
+      <button class="chats-button" type="button" (click)="openConversations()" aria-label="Open conversations">
+        <svg lucideMessageSquare size="16" aria-hidden="true"></svg>
+        Chats
+      </button>
+      <p>Local AI simulation / Saved in browser</p>
     </header>
 
     <app-message-list [conversation]="chatStore.selectedConversation()" />
     <app-message-composer />
   </section>
+
+  @if (conversationsOpen()) {
+    <button class="conversation-backdrop" type="button" aria-label="Close conversations" (click)="closeConversations()"></button>
+    <aside class="conversation-sheet" aria-label="Conversations drawer">
+      <div class="sheet-head">
+        <div>
+          <span>Conversations</span>
+          <strong>{{ chatStore.conversations().length }} chats</strong>
+        </div>
+        <button type="button" aria-label="Close conversations" (click)="closeConversations()">
+          <svg lucideX size="18" aria-hidden="true"></svg>
+        </button>
+      </div>
+      <div class="sheet-actions">
+        <span>Local chat history</span>
+        <button type="button" (click)="createConversationFromSheet()">New Chat</button>
+      </div>
+      <app-conversation-list [showHeader]="false" (conversationActivated)="closeConversations()" />
+    </aside>
+  }
 </div>

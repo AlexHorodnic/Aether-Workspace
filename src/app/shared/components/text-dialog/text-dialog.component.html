@@ -1,0 +1,33 @@
+@if (open) {
+  <div class="dialog-backdrop" (click)="onBackdropClick($event)">
+    <section
+      #dialog
+      class="text-dialog"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="title"
+      tabindex="-1"
+    >
+      <div class="dialog-mark" aria-hidden="true">
+        <span></span>
+      </div>
+
+      <div class="dialog-copy">
+        <h2>{{ title }}</h2>
+        <p>{{ description }}</p>
+      </div>
+
+      <form (ngSubmit)="onSubmit()">
+        <label>
+          {{ label }}
+          <input #textInput type="text" name="dialogValue" [(ngModel)]="draft" autocomplete="off" />
+        </label>
+
+        <div class="dialog-actions">
+          <button type="button" class="secondary" (click)="cancel.emit()">{{ cancelLabel }}</button>
+          <button type="submit" class="primary" [disabled]="!draft.trim()">{{ confirmLabel }}</button>
+        </div>
+      </form>
+    </section>
+  </div>
+}

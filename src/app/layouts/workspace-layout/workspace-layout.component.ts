@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewChild, computed, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { LucideFolderOpen, LucideMenu, LucideMessageSquare, LucideSearch, LucideSettings, LucideSparkles } from '@lucide/angular';
 import { ChatStoreService } from '../../core/services/chat-store.service';
 import { SettingsStoreService } from '../../core/services/settings-store.service';
 import { CommandPaletteComponent } from '../../shared/components/command-palette/command-palette.component';
@@ -13,7 +14,19 @@ interface NavItem {
 
 @Component({
   selector: 'app-workspace-layout',
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, CommandPaletteComponent],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    CommandPaletteComponent,
+    LucideFolderOpen,
+    LucideMenu,
+    LucideMessageSquare,
+    LucideSearch,
+    LucideSettings,
+    LucideSparkles,
+  ],
   templateUrl: './workspace-layout.component.html',
   styleUrl: './workspace-layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

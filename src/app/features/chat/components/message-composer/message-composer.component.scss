@@ -23,6 +23,7 @@
 }
 
 label {
+  padding-inline: 0.25rem;
   color: var(--color-amber);
   font-size: 0.68rem;
   font-weight: 850;
@@ -34,7 +35,7 @@ textarea {
   width: 100%;
   min-height: 3.6rem;
   max-height: 11rem;
-  resize: vertical;
+  resize: none;
   border: 0;
   background: transparent;
   color: var(--color-text);
@@ -87,6 +88,27 @@ button:disabled {
 }
 
 @media (max-width: 560px) {
-  :host { padding: 0 0.7rem 0.7rem; }
+  :host {
+    padding: 0 0.7rem 0.75rem;
+    background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--color-bg-elevated) 78%, transparent) 38%);
+  }
+  .composer-shell {
+    gap: 0.45rem;
+    padding: 0.68rem;
+    border-color: color-mix(in srgb, var(--color-border) 38%, transparent);
+    background: color-mix(in srgb, var(--color-surface) 74%, var(--color-bg-elevated));
+    box-shadow: 0 0.85rem 2.1rem rgb(0 0 0 / 0.2), inset 0 1px 0 rgb(255 255 255 / 0.035);
+  }
+  .composer-shell:focus-within {
+    border-color: color-mix(in srgb, var(--color-primary) 34%, transparent);
+    box-shadow: 0 0.9rem 2.2rem rgb(0 0 0 / 0.22), 0 0 0 2px var(--color-primary-soft);
+  }
+  label { color: color-mix(in srgb, var(--color-amber) 76%, var(--color-text-muted)); }
+  textarea { min-height: 3.15rem; }
   .composer-actions { align-items: stretch; flex-direction: column; gap: 0.7rem; }
+  .composer-actions span { font-size: 0.74rem; }
+  button {
+    border-color: transparent;
+    box-shadow: 0 0.55rem 1.25rem color-mix(in srgb, var(--color-primary) 18%, transparent);
+  }
 }

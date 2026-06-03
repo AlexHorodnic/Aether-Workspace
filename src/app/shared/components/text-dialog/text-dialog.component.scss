@@ -1,0 +1,115 @@
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgb(9 5 13 / 0.68);
+  backdrop-filter: blur(12px);
+}
+
+.text-dialog {
+  width: min(100%, 29rem);
+  display: grid;
+  gap: 1rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: calc(var(--radius-xl) + 0.15rem);
+  padding: 1.1rem;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-bg-elevated) 96%, transparent), var(--color-surface));
+  box-shadow: var(--shadow-modal), 0 0 4rem var(--color-primary-soft);
+  outline: 0;
+}
+
+.dialog-mark {
+  display: grid;
+  place-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 34%, transparent);
+  border-radius: 1rem;
+  background: var(--color-primary-soft);
+}
+
+.dialog-mark span {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 999px;
+  background: var(--gradient-brand);
+  box-shadow: 0 0 1.25rem var(--color-primary-soft);
+}
+
+.dialog-copy,
+form,
+label {
+  display: grid;
+  gap: 0.55rem;
+}
+
+h2,
+p { margin: 0; }
+
+h2 {
+  color: var(--color-text);
+  font-size: 1.25rem;
+  letter-spacing: -0.035em;
+}
+
+p {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+label {
+  color: var(--color-amber);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+input {
+  min-height: 2.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0 0.85rem;
+  background: var(--color-surface-soft);
+  color: var(--color-text);
+  outline: 0;
+}
+
+input:focus {
+  border-color: color-mix(in srgb, var(--color-primary) 48%, transparent);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  padding-top: 0.2rem;
+}
+
+button {
+  min-height: 2.55rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0 1rem;
+  color: var(--color-text);
+  font-weight: 850;
+  cursor: pointer;
+}
+
+button.secondary { background: var(--color-surface-soft); }
+button.primary {
+  border-color: color-mix(in srgb, var(--color-primary) 42%, transparent);
+  background: var(--gradient-brand);
+  color: #160b1f;
+}
+button:disabled { cursor: not-allowed; filter: saturate(0.65); opacity: 0.45; }
+
+@media (max-width: 520px) {
+  .text-dialog { padding: 1rem; }
+  .dialog-actions { flex-direction: column-reverse; }
+  button { width: 100%; }
+}

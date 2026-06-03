@@ -6,6 +6,7 @@
 
 .workspace-shell {
   display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
   grid-template-columns: 18.5rem minmax(0, 1fr);
   height: 100dvh;
   overflow: hidden;
@@ -13,8 +14,10 @@
 
 .sidebar {
   position: sticky;
-  top: 0;
-  height: 100dvh;
+  top: 4.7rem;
+  grid-row: 2;
+  grid-column: 1;
+  height: calc(100dvh - 4.7rem);
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: 1.5rem;
@@ -32,20 +35,20 @@
   align-items: center;
 }
 
-.brand { gap: 0.75rem; padding: 0.45rem; }
+.brand { padding: 0.45rem; }
+.brand div { display: grid; gap: 0.28rem; }
 
-.brand-mark,
 .avatar {
   display: grid;
   place-items: center;
   border-radius: 1rem;
   background: var(--gradient-brand);
   color: #160b1f;
-  font-weight: 950;
+  font-weight: 900;
 }
 
-.brand-mark { width: 2.75rem; height: 2.75rem; }
 .avatar { width: 2.35rem; height: 2.35rem; font-size: 0.78rem; }
+.avatar { border-radius: 50%; }
 
 .brand span,
 .user-chip span,
@@ -70,13 +73,6 @@
   color: var(--color-text);
 }
 
-.nav-icon {
-  width: 1rem;
-  height: 1rem;
-  border-radius: 0.35rem;
-  background: var(--gradient-brand);
-}
-
 .sidebar-card {
   display: grid;
   gap: 0.5rem;
@@ -94,15 +90,19 @@
   text-transform: uppercase;
 }
 
-.workspace-main { min-width: 0; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); }
+.workspace-main {
+  grid-row: 2;
+  grid-column: 2;
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+}
 
 .topbar {
-  position: sticky;
-  top: 0;
-  z-index: 30;
+  grid-row: 1;
+  grid-column: 1 / -1;
   border-bottom: 1px solid var(--color-border);
   background: var(--color-surface-glass);
-  backdrop-filter: blur(14px);
 }
 
 .topbar-inner {
@@ -118,9 +118,10 @@
 }
 
 .global-search {
-  justify-content: space-between;
-  width: min(100%, 36rem);
-  min-height: 2.75rem;
+  gap: 0.45rem;
+  justify-content: start;
+  width: min(100%, 30rem);
+  height: 2.75rem;
   padding: 0 0.9rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -129,22 +130,21 @@
   cursor: pointer;
 }
 
-.global-search kbd { color: var(--color-amber); }
+.global-search kbd { margin-left: auto; color: var(--color-amber); }
+.search-label-mobile { display: none; }
 
 .user-chip {
   position: absolute;
   right: 1.25rem;
   top: 50%;
   transform: translateY(-50%);
-  gap: 0.7rem;
-  padding: 0.35rem 0.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-surface);
+  border: 0;
+  padding: 0;
+  background: transparent;
 }
 
-.user-chip div:last-child { display: grid; gap: 0.05rem; padding-right: 0.35rem; }
-.route-surface { min-width: 0; min-height: 0; overflow: auto; padding: 1rem; }
+.user-chip div:last-child { display: none; }
+.route-surface { min-height: 0; overflow: auto; padding: 1rem; }
 .route-container {
   width: min(100%, 93.75rem);
   height: 100%;
@@ -162,28 +162,28 @@
 
 @media (max-width: 980px) {
   .workspace-shell { grid-template-columns: 1fr; }
+  .workspace-main { grid-column: 1; }
   .sidebar {
     position: fixed;
-    z-index: 60;
+    z-index: 90;
+    top: 0;
     width: min(18.5rem, 82vw);
+    height: 100dvh;
     transform: translateX(-105%);
-    transition: transform 180ms ease;
-    box-shadow: var(--shadow-modal);
   }
   .sidebar.open { transform: translateX(0); }
-  .drawer-backdrop { display: block; position: fixed; inset: 0; z-index: 50; border: 0; background: rgb(9 5 13 / 0.62); }
+  .drawer-backdrop { display: block; position: fixed; inset: 0; z-index: 80; border: 0; background: rgb(9 5 13 / 0.62); }
   .mobile-menu { position: absolute; left: 1.25rem; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; }
-  .mobile-menu span { width: 1rem; height: 2px; margin: 2px 0; background: var(--color-text); }
-  .user-chip div:last-child { display: none; }
 }
 
 @media (max-width: 680px) {
   .topbar-inner { justify-content: space-between; gap: 0.65rem; padding: 0.75rem; }
   .mobile-menu { position: static; }
   .user-chip { position: static; transform: none; }
-  .global-search { flex: initial; width: 2.75rem; padding: 0; justify-content: center; }
-  .global-search span { display: none; }
-  .global-search kbd { font-size: 0; }
-  .global-search kbd::after { content: 'K'; font-size: 0.78rem; }
+  .global-search { flex: 0 1 8.6rem; width: auto; min-width: 6.75rem; justify-content: start; padding-inline: 0.75rem; }
+  .search-label { display: none; }
+  .search-label-mobile { display: inline; }
+  .global-search span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .global-search kbd { display: none; }
   .route-surface { padding: 0.75rem; }
 }
