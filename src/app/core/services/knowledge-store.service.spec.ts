@@ -8,6 +8,9 @@ describe('KnowledgeStoreService', () => {
   const documents = { put: vi.fn(), delete: vi.fn() };
 
   beforeEach(() => {
+    if (typeof localStorage.removeItem === 'function') {
+      localStorage.removeItem('aether.knowledgeFiles');
+    }
     extractor.extract.mockReset();
     documents.put.mockReset().mockResolvedValue(undefined);
     documents.delete.mockReset().mockResolvedValue(undefined);
