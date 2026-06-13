@@ -1,8 +1,8 @@
-<section class="knowledge-grid">
+ï»¿<section class="knowledge-hero">
   <div class="knowledge-copy">
     <span>Knowledge Base</span>
-    <h1>Organize source material before asking the AI to reason over it.</h1>
-    <p>Uploads are mocked on the frontend. File metadata, progress, and indexed states persist in local storage.</p>
+    <h1>Build context for better AI responses.</h1>
+    <p>Extract and index documents privately in your browser, then ground local AI answers in the sources you choose.</p>
   </div>
 
   <label
@@ -12,36 +12,67 @@
     (dragleave)="onDragLeave()"
     (drop)="onDrop($event)"
   >
-    <input type="file" multiple (change)="onFileSelect($event)" />
-    <strong>Drop files here</strong>
-    <span>or click to browse documents, notes, and PDFs</span>
+    <input type="file" accept=".pdf,.txt,.md,.markdown,.csv,.json,.log,.html,.css,.scss,.ts,.js,text/*,application/pdf" multiple (change)="onFileSelect($event)" />
+    <span class="upload-kicker">Private processing</span>
+    <strong>Index workspace sources</strong>
+    <span>Drop PDFs, Markdown, text, data, or source files. Contents never leave this device.</span>
   </label>
 </section>
 
-@if (knowledgeStore.files().length) {
-  <section class="file-grid" aria-label="Uploaded files">
-    @for (file of knowledgeStore.files(); track file.id) {
-      <app-ui-card class="file-card">
-        <div class="file-icon" aria-hidden="true">{{ file.name.slice(0, 1).toUpperCase() }}</div>
-        <div class="file-main">
-          <h2>{{ file.name }}</h2>
-          <p>{{ file.type }} · {{ formatSize(file.size) }}</p>
-          <div class="progress-track" aria-label="Upload progress">
-            <span [style.width.%]="file.progress"></span>
-          </div>
-          <div class="file-meta">
-            <strong [class.indexed]="file.status === 'Indexed'">{{ file.status }}</strong>
-            <small>{{ file.progress }}%</small>
-          </div>
-        </div>
-        <button type="button" (click)="knowledgeStore.removeFile(file.id)" aria-label="Remove file">Remove</button>
-      </app-ui-card>
+<app-knowledge-metrics [files]="knowledgeStore.files()" [collectionCount]="activeCollectionCount()" />
+
+<section class="workspace-section" aria-labelledby="collections-title">
+  <div class="section-header">
+    <div>
+      <span>Collections</span>
+      <h2 id="collections-title">Organize source material by workflow</h2>
+    </div>
+    <p>{{ activeCollectionCount() }} active spaces for AI context.</p>
+  </div>
+
+  <div class="collections-grid">
+    @for (collection of collections(); track collection.name) {
+      <app-collection-card [collection]="collection" />
+    }
+  </div>
+</section>
+
+<section class="knowledge-bottom">
+  <section class="workspace-section files-section" aria-labelledby="files-title">
+    <div class="section-header">
+      <div>
+        <span>Files</span>
+        <h2 id="files-title">Indexed workspace sources</h2>
+      </div>
+      <p>{{ knowledgeStore.files().length }} uploaded files.</p>
+    </div>
+
+    @if (knowledgeStore.files().length) {
+      <div class="file-list" aria-label="Uploaded files">
+        @for (file of knowledgeStore.files(); track file.id) {
+          <app-knowledge-file-card
+            [file]="file"
+            [collection]="collectionForFile(file)"
+            [collections]="knowledgeStore.collections"
+            (collectionChange)="updateCollection(file.id, $event)"
+            (remove)="knowledgeStore.removeFile($event)"
+          />
+        }
+      </div>
+    } @else {
+      <div class="knowledge-empty">
+        <app-empty-state
+          eyebrow="Ready for sources"
+          title="Build context for better AI responses"
+          description="Upload PDFs, technical documentation, meeting notes, product requirements, or research documents to create an AI-ready workspace."
+        />
+        <label class="empty-upload">
+          <input type="file" accept=".pdf,.txt,.md,.markdown,.csv,.json,.log,.html,.css,.scss,.ts,.js,text/*,application/pdf" multiple (change)="onFileSelect($event)" />
+          Upload Files
+        </label>
+      </div>
     }
   </section>
-} @else {
-  <app-empty-state
-    eyebrow="No files"
-    title="Your knowledge base is empty."
-    description="Upload sample documents to demonstrate file organization, progress states, and local persistence."
-  />
-}
+
+  <app-activity-feed [files]="knowledgeStore.files()" [collectionForFile]="collectionForFile" />
+</section>

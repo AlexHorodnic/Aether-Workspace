@@ -1,4 +1,4 @@
-export type KnowledgeStatus = 'Uploaded' | 'Processing' | 'Indexed';
+export type KnowledgeStatus = 'Processing' | 'Indexed' | 'Failed';
 
 export interface KnowledgeFile {
   id: string;
@@ -7,5 +7,15 @@ export interface KnowledgeFile {
   size: number;
   progress: number;
   status: KnowledgeStatus;
+  collection: string;
+  wordCount: number;
+  error?: string;
   createdAt: number;
+}
+
+export interface KnowledgeDocument {
+  id: string;
+  fileName: string;
+  content: string;
+  chunks: string[];
 }

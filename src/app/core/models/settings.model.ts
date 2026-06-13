@@ -1,5 +1,5 @@
 export type ThemeMode = 'dark' | 'light';
-export type AetherModel = 'Aether Fast' | 'Aether Pro' | 'Aether Reasoning';
+export type AetherModel = 'SmolLM2 1.7B';
 export type ResponseStyle = 'Balanced' | 'Concise' | 'Detailed' | 'Executive';
 
 export interface WorkspaceSettings {

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from '@angular/core';
 import { LucideMessageSquare, LucideX } from '@lucide/angular';
 import { ChatStoreService } from '../../../../core/services/chat-store.service';
+import { LocalAiService } from '../../../../core/services/local-ai.service';
 import { ConversationListComponent } from '../../components/conversation-list/conversation-list.component';
 import { MessageComposerComponent } from '../../components/message-composer/message-composer.component';
 import { MessageListComponent } from '../../components/message-list/message-list.component';
@@ -14,6 +15,7 @@ import { MessageListComponent } from '../../components/message-list/message-list
 })
 export class ChatPageComponent {
   readonly chatStore = inject(ChatStoreService);
+  readonly localAi = inject(LocalAiService);
   readonly conversationsOpen = signal(false);
 
   openConversations(): void {
@@ -27,6 +29,10 @@ export class ChatPageComponent {
   createConversationFromSheet(): void {
     this.chatStore.createConversation();
     this.closeConversations();
+  }
+
+  activateModel(): void {
+    void this.localAi.initialize();
   }
 
   @HostListener('document:keydown.escape')

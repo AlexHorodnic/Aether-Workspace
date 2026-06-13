@@ -11,7 +11,22 @@
         <svg lucideMessageSquare size="16" aria-hidden="true"></svg>
         Chats
       </button>
-      <p>Local AI simulation / Saved in browser</p>
+      <div class="model-status" [class.ready]="localAi.ready()" [class.error]="localAi.state() === 'error' || localAi.state() === 'unsupported'">
+        <span class="status-dot" aria-hidden="true"></span>
+        <div>
+          <strong>{{ localAi.statusText() }}</strong>
+          <small>
+            @if (localAi.state() === 'loading') {
+              {{ localAi.progress() }}% downloaded
+            } @else {
+              {{ localAi.modelName }} / runs on your device
+            }
+          </small>
+        </div>
+        @if (localAi.state() === 'idle' || localAi.state() === 'error') {
+          <button type="button" (click)="activateModel()">Activate local AI</button>
+        }
+      </div>
     </header>
 
     <app-message-list [conversation]="chatStore.selectedConversation()" />

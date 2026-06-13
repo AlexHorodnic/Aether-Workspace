@@ -11,6 +11,17 @@
           <div class="bubble">
             <span class="role">{{ message.role === 'user' ? 'You' : 'Aether' }}</span>
             <p>{{ message.content }}</p>
+            @if (message.sources?.length) {
+              <div class="sources" aria-label="Answer sources">
+                <strong>Workspace sources</strong>
+                @for (source of message.sources; track source.fileId + source.excerpt) {
+                  <details>
+                    <summary>{{ source.fileName }}</summary>
+                    <p>{{ source.excerpt }}</p>
+                  </details>
+                }
+              </div>
+            }
             @if (message.status === 'streaming') {
               <span class="typing" aria-label="Aether is typing"><i></i><i></i><i></i></span>
             }

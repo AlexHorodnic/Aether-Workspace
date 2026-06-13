@@ -10,7 +10,7 @@ export const DEFAULT_SETTINGS: WorkspaceSettings = {
   profileRole: 'Product Designer',
   workspaceName: 'Aether Workspace',
   theme: 'dark',
-  model: 'Aether Pro',
+  model: 'SmolLM2 1.7B',
   temperature: 0.62,
   responseStyle: 'Balanced',
 };
@@ -25,7 +25,7 @@ function isWorkspaceSettings(value: unknown): value is WorkspaceSettings {
     && typeof settings.profileRole === 'string'
     && typeof settings.workspaceName === 'string'
     && (settings.theme === 'dark' || settings.theme === 'light')
-    && (settings.model === 'Aether Fast' || settings.model === 'Aether Pro' || settings.model === 'Aether Reasoning')
+    && settings.model === 'SmolLM2 1.7B'
     && typeof settings.temperature === 'number'
     && settings.temperature >= 0
     && settings.temperature <= 1

@@ -1,0 +1,11 @@
+<article class="collection-card">
+  <div class="collection-icon" aria-hidden="true">{{ collection().name.slice(0, 1) }}</div>
+  <div>
+    <h3>{{ collection().name }}</h3>
+    <p>{{ collection().description }}</p>
+  </div>
+  <footer>
+    <span>{{ collection().fileCount }} files</span>
+    <span>{{ collection().indexedCount }} indexed</span>
+  </footer>
+</article>

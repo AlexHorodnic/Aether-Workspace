@@ -122,7 +122,28 @@ button:hover {
 }
 
 @media (max-width: 560px) {
-  :host { padding: 1rem; }
+  :host {
+    align-content: start;
+    min-height: auto;
+    padding: 1rem;
+  }
+  .welcome {
+    gap: 0.7rem;
+    padding: 1rem;
+  }
+  .aether-orb {
+    width: 3.6rem;
+    height: 3.6rem;
+  }
+  .aether-orb span {
+    width: 1.55rem;
+    height: 1.55rem;
+  }
+  h2 { font-size: 2rem; }
+  p { line-height: 1.5; }
   .quick-actions { width: 100%; }
-  button { width: 100%; }
+  button {
+    width: 100%;
+    min-height: 2.45rem;
+  }
 }

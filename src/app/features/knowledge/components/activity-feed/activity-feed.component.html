@@ -1,0 +1,18 @@
+<section class="activity-feed" aria-label="Recent activity">
+  <header>
+    <span>Recent Activity</span>
+    <strong>{{ activities().length }} events</strong>
+  </header>
+
+  <ol>
+    @for (item of activities(); track item.title) {
+      <li [attr.data-tone]="item.tone">
+        <i aria-hidden="true"></i>
+        <div>
+          <strong>{{ item.title }}</strong>
+          <p>{{ item.detail }}</p>
+        </div>
+      </li>
+    }
+  </ol>
+</section>

@@ -42,7 +42,7 @@
 .chat-header {
   position: relative;
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
   padding: 0.85rem 1rem;
@@ -67,7 +67,7 @@
 
 .chat-header > * { position: relative; }
 
-.chat-header span {
+.chat-header > div:first-child > span {
   color: var(--color-amber);
   font-size: 0.72rem;
   font-weight: 850;
@@ -88,11 +88,64 @@ h1 {
   letter-spacing: -0.04em;
 }
 
-p {
-  flex: 0 0 auto;
+.model-status {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: min(25rem, 48%);
+  padding: 0.5rem 0.55rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+}
+
+.model-status .status-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--color-amber);
+  box-shadow: 0 0 0 0.22rem color-mix(in srgb, var(--color-amber) 12%, transparent);
+}
+
+.model-status.ready .status-dot {
+  background: #57d79a;
+  box-shadow: 0 0 0 0.22rem color-mix(in srgb, #57d79a 12%, transparent);
+}
+
+.model-status.error .status-dot { background: #ef6464; }
+
+.model-status div {
+  display: grid;
+  min-width: 0;
+}
+
+.model-status strong,
+.model-status small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.model-status strong {
+  color: var(--color-text);
+  font-size: 0.78rem;
+}
+
+.model-status small {
   color: var(--color-text-muted);
-  font-size: 0.88rem;
-  line-height: 1.6;
+  font-size: 0.7rem;
+}
+
+.model-status button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.52rem 0.7rem;
+  background: var(--gradient-brand);
+  color: #160b1f;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 900;
 }
 
 .conversation-backdrop,
@@ -206,6 +259,10 @@ p {
   }
   .chat-layout { gap: 0; }
   .chat-header { align-items: start; display: grid; grid-template-columns: minmax(0, 1fr) auto; }
-  .chat-header p { grid-column: 1 / -1; }
+  .model-status {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+  }
   h1 { white-space: normal; }
 }

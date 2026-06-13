@@ -53,6 +53,15 @@ textarea::placeholder {
   color: var(--color-text-subtle);
 }
 
+.composer-error {
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.7rem;
+  background: color-mix(in srgb, #ef6464 12%, transparent);
+  color: #ff9a9a;
+  font-size: 0.8rem;
+}
+
 .composer-actions {
   display: flex;
   align-items: center;

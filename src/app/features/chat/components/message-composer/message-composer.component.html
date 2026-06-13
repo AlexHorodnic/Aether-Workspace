@@ -6,10 +6,23 @@
     [ngModel]="draft()"
     (ngModelChange)="updateDraft($event)"
     (keydown)="handleKeydown($event)"
-    placeholder="Ask for a plan, paste notes, or use Shift+Enter for a new line..."
+    [disabled]="!localAi.ready() || localAi.busy()"
+    maxlength="4000"
+    placeholder="Ask Aether or query your indexed workspace sources..."
   ></textarea>
+  @if (store.composerError(); as error) {
+    <p class="composer-error" role="alert">{{ error }}</p>
+  }
   <div class="composer-actions">
-    <span>Enter to send / Shift+Enter for newline</span>
-    <button type="button" [disabled]="!draft().trim()" (click)="send()">Send</button>
+    <span>
+      @if (localAi.ready()) {
+        Private generation / {{ draft().length }}/4000
+      } @else {
+        Activate the local model above to begin
+      }
+    </span>
+    <button type="button" [disabled]="!draft().trim() || !localAi.ready() || localAi.busy()" (click)="send()">
+      {{ localAi.state() === 'generating' ? 'Thinking...' : 'Send' }}
+    </button>
   </div>
 </div>

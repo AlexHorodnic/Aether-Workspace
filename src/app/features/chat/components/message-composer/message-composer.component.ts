@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatStoreService } from '../../../../core/services/chat-store.service';
+import { LocalAiService } from '../../../../core/services/local-ai.service';
 
 @Component({
   selector: 'app-message-composer',
@@ -11,11 +12,14 @@ import { ChatStoreService } from '../../../../core/services/chat-store.service';
 })
 export class MessageComposerComponent {
   private readonly chatStore = inject(ChatStoreService);
+  readonly localAi = inject(LocalAiService);
+  readonly store = this.chatStore;
 
   readonly draft = signal('');
 
   updateDraft(value: string): void {
     this.draft.set(value);
+    this.chatStore.clearComposerError();
   }
 
   handleKeydown(event: KeyboardEvent): void {
@@ -33,7 +37,7 @@ export class MessageComposerComponent {
       return;
     }
 
-    this.chatStore.sendMessage(message);
+    void this.chatStore.sendMessage(message);
     this.draft.set('');
   }
 }

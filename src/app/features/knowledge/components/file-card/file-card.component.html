@@ -1,0 +1,31 @@
+<article class="file-card">
+  <div class="file-icon" aria-hidden="true">{{ file().name.slice(0, 1).toUpperCase() }}</div>
+
+  <div class="file-main">
+    <header>
+      <h3>{{ file().name }}</h3>
+      <span [class.indexed]="file().status === 'Indexed'">{{ file().status }}</span>
+    </header>
+
+    <p>{{ file().type }} &middot; {{ formatSize(file().size) }} &middot; {{ file().wordCount }} words &middot; Added {{ formatDate(file().createdAt) }}</p>
+
+    @if (file().error) {
+      <p class="file-error">{{ file().error }}</p>
+    }
+
+    <div class="progress-track" aria-label="Document processing progress">
+      <span [style.width.%]="file().progress"></span>
+    </div>
+
+    <footer>
+      <select [value]="collection()" (change)="collectionChange.emit($any($event.target).value)" aria-label="Document collection">
+        @for (option of collections(); track option) {
+          <option [value]="option">{{ option }}</option>
+        }
+      </select>
+      <small>{{ file().progress }}%</small>
+    </footer>
+  </div>
+
+  <button type="button" (click)="remove.emit(file().id)" aria-label="Remove file">Remove</button>
+</article>

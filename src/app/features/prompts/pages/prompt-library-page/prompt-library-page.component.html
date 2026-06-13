@@ -3,18 +3,20 @@
     <span>Prompt Library</span>
     <h1>Reusable prompts for repeatable high-quality output.</h1>
   </div>
-  <p>Filter by workflow, search by intent, then launch a prompt directly into a new chat.</p>
+  <p>Search by intent, choose a workflow, then launch a polished prompt directly into chat.</p>
 </section>
 
-<section class="filters" aria-label="Prompt filters">
-  <label>
-    <span>Search prompts</span>
-    <input type="search" [ngModel]="search()" (ngModelChange)="setSearch($event)" placeholder="Search writing, coding, business..." />
+<section class="prompt-toolbar" aria-label="Prompt filters">
+  <label class="search-field">
+    <span>Search</span>
+    <input type="search" [ngModel]="search()" (ngModelChange)="setSearch($event)" placeholder="Find a prompt..." />
   </label>
 
-  <div class="category-tabs" role="tablist" aria-label="Prompt categories">
+  <div class="category-tabs" role="tablist" aria-label="Prompt workflow categories">
     @for (item of categories; track item) {
-      <button type="button" [class.active]="item === category()" (click)="setCategory(item)">{{ item }}</button>
+      <button type="button" role="tab" [attr.aria-selected]="item === category()" [class.active]="item === category()" (click)="setCategory(item)">
+        {{ item }}
+      </button>
     }
   </div>
 </section>
@@ -22,16 +24,43 @@
 @if (filteredPrompts().length) {
   <section class="prompt-grid" aria-label="Prompt templates">
     @for (prompt of filteredPrompts(); track prompt.id) {
-      <app-ui-card [interactive]="true" class="prompt-card" [attr.data-accent]="prompt.accent">
-        <div class="card-topline">
-          <span>{{ prompt.category }}</span>
-          <i aria-hidden="true"></i>
+      <article class="prompt-card" [attr.data-accent]="prompt.accent">
+        <div class="card-meta">
+          <span class="category-icon" aria-hidden="true">
+            @switch (prompt.category) {
+              @case ('Writing') {
+                <svg lucidePenLine size="16"></svg>
+              }
+              @case ('Coding') {
+                <svg lucideCode2 size="16"></svg>
+              }
+              @case ('Business') {
+                <svg lucideBriefcaseBusiness size="16"></svg>
+              }
+              @case ('Productivity') {
+                <svg lucideListChecks size="16"></svg>
+              }
+            }
+          </span>
+          <span class="category-label">{{ prompt.category }}</span>
+          @if (badgeFor(prompt); as badge) {
+            <span class="badge">{{ badge }}</span>
+          }
         </div>
-        <h2>{{ prompt.title }}</h2>
-        <p>{{ prompt.description }}</p>
-        <pre>{{ prompt.content }}</pre>
-        <button type="button" (click)="usePrompt(prompt.content)">Use prompt</button>
-      </app-ui-card>
+
+        <div class="card-copy">
+          <h2>{{ prompt.title }}</h2>
+          <p>{{ prompt.description }}</p>
+        </div>
+
+        <div class="card-actions">
+          <button type="button" class="secondary-action" (click)="openDetails(prompt)">
+            <svg lucideEye size="15" aria-hidden="true"></svg>
+            View Details
+          </button>
+          <button type="button" class="primary-action" (click)="usePrompt(prompt.content)">Use Prompt</button>
+        </div>
+      </article>
     }
   </section>
 } @else {
@@ -40,4 +69,8 @@
     title="No prompt matches that filter."
     description="Try a broader search term or switch back to all categories."
   />
+}
+
+@if (selectedPrompt(); as prompt) {
+  <app-prompt-details-drawer [prompt]="prompt" [badge]="badgeFor(prompt)" (close)="closeDetails()" (launch)="launchPrompt($event)" />
 }

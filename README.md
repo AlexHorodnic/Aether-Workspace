@@ -1,59 +1,63 @@
-# AetherWorkspace
+# Aether Workspace
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.12.
+A privacy-first AI workspace that runs an open-source language model directly in the browser. Aether combines local streaming chat, reusable prompt templates, and document-grounded answers without sending prompts or files to an application server.
 
-## Development server
+## Why it is different
 
-To start a local development server, run:
+- **No paid inference API:** WebLLM runs SmolLM2 1.7B with WebGPU on the visitor's device.
+- **No exposed API key:** there is no shared AI endpoint or browser credential to steal.
+- **Private knowledge retrieval:** PDF and text content is extracted locally, chunked, and stored in IndexedDB.
+- **Cited answers:** relevant chunks are selected locally and included as named sources in chat.
+- **Abuse-resistant architecture:** compute cost belongs to each device, while prompt length, duplicate, cooldown, and per-minute limits prevent accidental local spam.
 
-```bash
-ng serve
-```
+## Product flow
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+1. Activate the local model from Chat. The first run downloads model assets and caches them in the browser.
+2. Add PDF, Markdown, text, CSV, JSON, or source-code files in Knowledge.
+3. Assign sources to workspace collections.
+4. Ask a question. Aether retrieves matching local chunks and streams a source-grounded response.
 
-## Code scaffolding
+## Architecture
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Angular 21 standalone components with feature-first lazy routes
+- Signals and computed state for UI and workspace stores
+- Web Worker-based WebLLM inference to keep generation off the UI thread
+- PDF.js and browser file APIs for local extraction
+- IndexedDB for document contents; guarded local storage for lightweight preferences and chat history
+- Lexical retrieval with ranked chunks and inline source references
+- Vitest behavioral tests and GitHub Actions CI
 
-```bash
-ng generate component component-name
-```
+The AI and PDF engines are dynamically loaded. The production initial bundle remains below the configured 500 kB warning budget.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Local development
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Requirements: Node.js 24, npm 11, and a current Chromium browser with WebGPU.
 
 ```bash
-ng test
+npm ci
+npm start
 ```
 
-## Running end-to-end tests
+Open `http://localhost:4200`.
 
-For end-to-end (e2e) testing, run:
+## Verification
 
 ```bash
-ng e2e
+npm run typecheck
+npm run test:ci
+npm run build
+npm audit --omit=dev
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Privacy and limitations
 
-## Additional Resources
+- Documents, prompts, and conversations remain in the current browser profile.
+- Model files are downloaded from the WebLLM/Hugging Face distribution used by the library.
+- WebGPU support and generation speed depend on the browser and device GPU.
+- Local models are less capable than large hosted models and can still produce inaccurate output.
+- Retrieval is intentionally lightweight and local; it is not a hosted vector database.
+- Clearing browser site data removes stored workspace content.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Security
+
+Aether does not accept or store API keys. Uploaded content is processed locally and is never sent to the application host. File type and size checks limit processing risk, generated output is rendered as text rather than trusted HTML, and CI runs type checking, tests, and production builds on every change.

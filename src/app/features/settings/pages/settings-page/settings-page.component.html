@@ -44,11 +44,7 @@
     <div class="field-row">
       <label>
         <span>Model</span>
-        <select [ngModel]="settingsStore.settings().model" (ngModelChange)="updateModel($event)">
-          @for (model of models; track model) {
-            <option [value]="model">{{ model }}</option>
-          }
-        </select>
+        <input type="text" value="SmolLM2 1.7B / browser-local" readonly />
       </label>
       <label>
         <span>Response style</span>
@@ -66,18 +62,18 @@
     </label>
 
     <div class="model-cards">
-      @for (model of models; track model) {
-        <button type="button" [class.active]="model === settingsStore.settings().model" (click)="updateModel(model)">
-          <strong>{{ model }}</strong>
-          <span>
-            @switch (model) {
-              @case ('Aether Fast') { Low latency drafts }
-              @case ('Aether Pro') { Balanced workspace output }
-              @case ('Aether Reasoning') { Deeper analysis flows }
-            }
-          </span>
-        </button>
-      }
+      <div class="active">
+        <strong>Private by design</strong>
+        <span>The model and documents stay in this browser. No API key or paid inference endpoint is used.</span>
+      </div>
+      <div>
+        <strong>Hardware accelerated</strong>
+        <span>WebGPU runs generation locally after the one-time model download.</span>
+      </div>
+      <div>
+        <strong>No shared abuse surface</strong>
+        <span>Each visitor uses their own device, with local message throttling and size limits.</span>
+      </div>
     </div>
   </app-ui-card>
 </section>

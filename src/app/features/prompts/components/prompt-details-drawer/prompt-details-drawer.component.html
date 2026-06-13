@@ -1,0 +1,57 @@
+<button type="button" class="backdrop" aria-label="Close prompt details" (click)="close.emit()"></button>
+
+<aside class="prompt-modal" role="dialog" aria-modal="true" [attr.aria-label]="prompt().title" tabindex="-1">
+  @let usage = usageFor(prompt());
+
+  <header class="modal-header">
+    <div>
+      <span>Prompt Details</span>
+      <h2>{{ prompt().title }}</h2>
+    </div>
+    <button type="button" class="icon-button" aria-label="Close prompt details" (click)="close.emit()">
+      <svg lucideX size="18" aria-hidden="true"></svg>
+    </button>
+  </header>
+
+  <section class="overview-section" aria-label="Prompt overview">
+    <div class="section-heading">
+      <span>Overview</span>
+    </div>
+    <p>{{ prompt().description }}</p>
+    <div class="modal-meta">
+      <span>{{ prompt().category }}</span>
+      @if (badge()) {
+        <span>{{ badge() }}</span>
+      }
+    </div>
+  </section>
+
+  <section class="template-panel" aria-label="Full prompt template">
+    <div class="section-heading">
+      <span>Template</span>
+    </div>
+    <pre>{{ prompt().content }}</pre>
+  </section>
+
+  <section class="usage-section" aria-label="Prompt usage">
+    <div class="section-heading">
+      <span>Usage</span>
+    </div>
+    <div class="usage-grid">
+      <span>{{ usage.used }}</span>
+      <span>{{ usage.estimate }}</span>
+      <span>{{ usage.lastLaunched }}</span>
+    </div>
+  </section>
+
+  <footer class="modal-actions">
+    <button type="button" class="secondary-action" (click)="copyPrompt(prompt().content)">
+      <svg lucideCopy size="15" aria-hidden="true"></svg>
+      Copy Prompt
+    </button>
+    <button type="button" class="primary-action" (click)="launch.emit(prompt())">
+      <svg lucideRocket size="15" aria-hidden="true"></svg>
+      Launch Prompt
+    </button>
+  </footer>
+</aside>
