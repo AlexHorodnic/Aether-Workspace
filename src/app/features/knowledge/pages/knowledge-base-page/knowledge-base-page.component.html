@@ -1,7 +1,7 @@
 ﻿<section class="knowledge-hero">
   <div class="knowledge-copy">
     <span>Knowledge Base</span>
-    <h1>Build context for better AI responses.</h1>
+    <h1>Ground every answer in your own sources.</h1>
     <p>Extract and index documents privately in your browser, then ground local AI answers in the sources you choose.</p>
   </div>
 
@@ -61,11 +61,9 @@
       </div>
     } @else {
       <div class="knowledge-empty">
-        <app-empty-state
-          eyebrow="Ready for sources"
-          title="Build context for better AI responses"
-          description="Upload PDFs, technical documentation, meeting notes, product requirements, or research documents to create an AI-ready workspace."
-        />
+        <span>Ready for sources</span>
+        <strong>Build a private context layer</strong>
+        <p>Upload product docs, notes, research, or source code. Aether extracts and indexes them locally.</p>
         <label class="empty-upload">
           <input type="file" accept=".pdf,.txt,.md,.markdown,.csv,.json,.log,.html,.css,.scss,.ts,.js,text/*,application/pdf" multiple (change)="onFileSelect($event)" />
           Upload Files

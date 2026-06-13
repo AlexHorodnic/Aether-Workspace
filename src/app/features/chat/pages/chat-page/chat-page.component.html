@@ -19,7 +19,7 @@
             @if (localAi.state() === 'loading') {
               {{ localAi.progress() }}% downloaded
             } @else {
-              {{ localAi.modelName }} / runs on your device
+              {{ localAi.modelName() }} / runs on your device
             }
           </small>
         </div>

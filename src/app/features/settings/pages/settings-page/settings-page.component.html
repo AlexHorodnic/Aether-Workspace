@@ -1,79 +1,145 @@
-<section class="settings-hero">
-  <div>
-    <span>Settings</span>
-    <h1>Tune the workspace experience without leaving the frontend.</h1>
-  </div>
-  <button type="button" (click)="settingsStore.toggleTheme()">
-    {{ settingsStore.settings().theme === 'dark' ? 'Switch to light' : 'Switch to dark' }}
-  </button>
-</section>
-
-<section class="settings-grid">
-  <app-ui-card class="settings-card profile-card">
-    <div class="avatar-large" aria-hidden="true">{{ settingsStore.settings().profileName.slice(0, 1).toUpperCase() }}</div>
-    <h2>Profile</h2>
-    <label>
-      <span>Name</span>
-      <input type="text" [ngModel]="settingsStore.settings().profileName" (ngModelChange)="updateName($event)" />
-    </label>
-    <label>
-      <span>Role</span>
-      <input type="text" [ngModel]="settingsStore.settings().profileRole" (ngModelChange)="updateRole($event)" />
-    </label>
-  </app-ui-card>
-
-  <app-ui-card class="settings-card">
-    <h2>Workspace</h2>
-    <label>
-      <span>Workspace name</span>
-      <input type="text" [ngModel]="settingsStore.settings().workspaceName" (ngModelChange)="updateWorkspace($event)" />
-    </label>
-    <div class="toggle-row">
-      <div>
-        <strong>Theme mode</strong>
-        <p>Dark by default, persisted locally.</p>
-      </div>
-      <button type="button" class="toggle" [class.light]="settingsStore.settings().theme === 'light'" (click)="settingsStore.toggleTheme()">
-        <span></span>
-      </button>
+<section class="settings-shell">
+  <header class="settings-hero">
+    <div>
+      <span>Workspace control</span>
+      <h1>Settings that apply when you decide.</h1>
+      <p>Changes stay in draft until saved. Switching models releases the active engine and loads the new profile on demand.</p>
     </div>
-  </app-ui-card>
 
-  <app-ui-card class="settings-card wide">
-    <h2>AI Preferences</h2>
-    <div class="field-row">
+    <div class="save-actions">
+      @if (saved()) {
+        <span class="saved-state">Settings saved</span>
+      } @else if (hasChanges()) {
+        <span class="draft-state">Unsaved changes</span>
+      } @else {
+        <span>Everything is up to date</span>
+      }
+      <button type="button" class="discard" [disabled]="!hasChanges()" (click)="discard()">Discard</button>
+      <button type="button" class="save" [disabled]="!hasChanges()" (click)="save()">Save settings</button>
+    </div>
+  </header>
+
+  <div class="settings-grid">
+    <app-ui-card class="settings-card identity-card">
+      <div class="card-heading">
+        <div class="avatar-large" aria-hidden="true">{{ draft().profileName.slice(0, 1).toUpperCase() || 'A' }}</div>
+        <div>
+          <span>Identity</span>
+          <h2>Profile and workspace</h2>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <label>
+          <span>Name</span>
+          <input type="text" [ngModel]="draft().profileName" (ngModelChange)="updateName($event)" />
+        </label>
+        <label>
+          <span>Role</span>
+          <input type="text" [ngModel]="draft().profileRole" (ngModelChange)="updateRole($event)" />
+        </label>
+      </div>
+
       <label>
-        <span>Model</span>
-        <input type="text" value="SmolLM2 1.7B / browser-local" readonly />
+        <span>Workspace name</span>
+        <input type="text" [ngModel]="draft().workspaceName" (ngModelChange)="updateWorkspace($event)" />
       </label>
+
+      <div class="theme-field">
+        <span>Interface theme</span>
+        <div class="theme-selector" aria-label="Interface theme">
+          <button type="button" [class.active]="draft().theme === 'dark'" (click)="updateTheme('dark')">
+            <span class="theme-preview dark"></span>
+            <span>
+              <strong>Dark</strong>
+              <small>Focused</small>
+            </span>
+          </button>
+          <button type="button" [class.active]="draft().theme === 'light'" (click)="updateTheme('light')">
+            <span class="theme-preview light"></span>
+            <span>
+              <strong>Light</strong>
+              <small>Airy</small>
+            </span>
+          </button>
+        </div>
+        <small>Applied only after Save.</small>
+      </div>
+    </app-ui-card>
+
+    <app-ui-card class="settings-card behavior-card">
+      <div class="card-heading">
+        <div>
+          <span>Response behavior</span>
+          <h2>Shape how Aether answers</h2>
+        </div>
+      </div>
+
       <label>
         <span>Response style</span>
-        <select [ngModel]="settingsStore.settings().responseStyle" (ngModelChange)="updateResponseStyle($event)">
+        <select [ngModel]="draft().responseStyle" (ngModelChange)="updateResponseStyle($event)">
           @for (style of styles; track style) {
             <option [value]="style">{{ style }}</option>
           }
         </select>
       </label>
-    </div>
 
-    <label class="temperature">
-      <span>Temperature: {{ settingsStore.settings().temperature | number: '1.2-2' }}</span>
-      <input type="range" min="0" max="1" step="0.01" [ngModel]="settingsStore.settings().temperature" (ngModelChange)="updateTemperature($event)" />
-    </label>
+      <label class="temperature">
+        <span>Creativity <strong>{{ draft().temperature | number: '1.2-2' }}</strong></span>
+        <input type="range" min="0" max="1" step="0.01" [ngModel]="draft().temperature" (ngModelChange)="updateTemperature($event)" />
+        <small>Lower values are more predictable. Higher values explore more varied wording.</small>
+      </label>
 
-    <div class="model-cards">
-      <div class="active">
-        <strong>Private by design</strong>
-        <span>The model and documents stay in this browser. No API key or paid inference endpoint is used.</span>
+      <div class="mode-status">
+        <span class="mode-icon">L</span>
+        <div>
+          <strong>Local Mode</strong>
+          <p>Private, offline after model download, and powered only by models on this device.</p>
+        </div>
+        <span class="active-pill">Active</span>
       </div>
-      <div>
-        <strong>Hardware accelerated</strong>
-        <span>WebGPU runs generation locally after the one-time model download.</span>
+
+    </app-ui-card>
+
+    <app-ui-card class="settings-card models-card">
+      <div class="models-heading">
+        <div>
+          <span>Local intelligence</span>
+          <h2>Choose a model profile</h2>
+        </div>
+        <p>{{ selectedModel().modelName }} needs about {{ selectedModel().vramMb / 1024 | number: '1.1-1' }} GB of GPU memory.</p>
       </div>
-      <div>
-        <strong>No shared abuse surface</strong>
-        <span>Each visitor uses their own device, with local message throttling and size limits.</span>
+
+      <div class="model-grid">
+        @for (model of models; track model.id) {
+          <button
+            type="button"
+            class="model-option"
+            [attr.data-tone]="model.tone"
+            [class.active]="model.id === draft().model"
+            (click)="updateModel(model.id)"
+          >
+            <span class="model-radio"></span>
+            <span class="model-copy">
+              <strong>{{ model.label }}</strong>
+              <b>{{ model.modelName }}</b>
+              <small>{{ model.description }}</small>
+            </span>
+            <span class="vram">{{ model.vramMb / 1024 | number: '1.1-1' }} GB</span>
+          </button>
+        }
       </div>
-    </div>
-  </app-ui-card>
+
+      <div class="model-notes">
+        <div class="model-note">
+          <strong>Automatic fallback</strong>
+          <p>If a larger profile fails, Aether releases it and attempts Fast. WebGPU compatibility errors are shown directly.</p>
+        </div>
+        <div class="online-note">
+          <strong>Online Mode is intentionally unavailable.</strong>
+          <p>Search, news, markets, and browsing require a secured gateway, rate limits, and monitored providers.</p>
+        </div>
+      </div>
+    </app-ui-card>
+  </div>
 </section>

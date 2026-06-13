@@ -144,7 +144,7 @@
 }
 
 .user-chip div:last-child { display: none; }
-.route-surface { min-height: 0; overflow: auto; padding: 1rem; }
+.route-surface { min-height: 0; overflow: hidden; padding: 1rem; }
 .route-container {
   width: min(100%, 93.75rem);
   height: 100%;
@@ -185,5 +185,6 @@
   .search-label-mobile { display: inline; }
   .global-search span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .global-search kbd { display: none; }
-  .route-surface { padding: 0.75rem; }
+  .route-surface { overflow: auto; padding: 0.75rem; }
+  .route-container { height: auto; min-height: 100%; }
 }

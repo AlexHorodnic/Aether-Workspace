@@ -10,7 +10,7 @@ export const DEFAULT_SETTINGS: WorkspaceSettings = {
   profileRole: 'Product Designer',
   workspaceName: 'Aether Workspace',
   theme: 'dark',
-  model: 'SmolLM2 1.7B',
+  model: 'fast',
   temperature: 0.62,
   responseStyle: 'Balanced',
 };
@@ -25,17 +25,34 @@ function isWorkspaceSettings(value: unknown): value is WorkspaceSettings {
     && typeof settings.profileRole === 'string'
     && typeof settings.workspaceName === 'string'
     && (settings.theme === 'dark' || settings.theme === 'light')
-    && settings.model === 'SmolLM2 1.7B'
+    && (settings.model === 'fast' || settings.model === 'balanced' || settings.model === 'smart' || settings.model === 'high-quality')
     && typeof settings.temperature === 'number'
     && settings.temperature >= 0
     && settings.temperature <= 1
     && (settings.responseStyle === 'Balanced' || settings.responseStyle === 'Concise' || settings.responseStyle === 'Detailed' || settings.responseStyle === 'Executive');
 }
 
+export function normalizeSettings(stored: unknown): WorkspaceSettings {
+  if (stored && typeof stored === 'object' && (stored as { model?: unknown }).model === 'SmolLM2 1.7B') {
+    const migrated = {
+      ...stored,
+      model: 'fast',
+    };
+    return isWorkspaceSettings(migrated) ? migrated : DEFAULT_SETTINGS;
+  }
+
+  return isWorkspaceSettings(stored) ? stored : DEFAULT_SETTINGS;
+}
+
+function restoreSettings(): WorkspaceSettings {
+  const stored = readStorage<unknown>(SETTINGS_KEY, DEFAULT_SETTINGS, (_value): _value is unknown => true);
+  return normalizeSettings(stored);
+}
+
 @Injectable({ providedIn: 'root' })
 export class SettingsStoreService {
   private readonly document = inject(DOCUMENT);
-  private readonly settingsState = signal<WorkspaceSettings>(readStorage<WorkspaceSettings>(SETTINGS_KEY, DEFAULT_SETTINGS, isWorkspaceSettings));
+  private readonly settingsState = signal<WorkspaceSettings>(restoreSettings());
 
   readonly settings = this.settingsState.asReadonly();
 
@@ -53,6 +70,13 @@ export class SettingsStoreService {
       ...partial,
       temperature: partial.temperature === undefined ? settings.temperature : this.clamp(partial.temperature),
     }));
+  }
+
+  saveSettings(settings: WorkspaceSettings): void {
+    this.settingsState.set({
+      ...settings,
+      temperature: this.clamp(settings.temperature),
+    });
   }
 
   toggleTheme(): void {

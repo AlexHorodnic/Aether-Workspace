@@ -9,7 +9,7 @@ article {
   gap: 0.35rem;
   border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
   border-radius: var(--radius-xl);
-  padding: 1rem;
+  padding: 0.72rem 0.85rem;
   background: color-mix(in srgb, var(--color-surface) 88%, transparent);
 }
 
@@ -23,7 +23,7 @@ span {
 
 strong {
   color: var(--color-text);
-  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
   line-height: 1;
 }
 

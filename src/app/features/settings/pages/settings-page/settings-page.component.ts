@@ -1,7 +1,15 @@
 import { DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ResponseStyle } from '../../../../core/models/settings.model';
+import {
+  AetherModel,
+  MODEL_PROFILES,
+  modelProfile,
+  ResponseStyle,
+  ThemeMode,
+  WorkspaceSettings,
+} from '../../../../core/models/settings.model';
+import { LocalAiService } from '../../../../core/services/local-ai.service';
 import { SettingsStoreService } from '../../../../core/services/settings-store.service';
 import { CardComponent } from '../../../../shared/components/card/card.component';
 
@@ -14,27 +22,67 @@ import { CardComponent } from '../../../../shared/components/card/card.component
 })
 export class SettingsPageComponent {
   readonly settingsStore = inject(SettingsStoreService);
+  private readonly localAi = inject(LocalAiService);
+
   readonly styles: ResponseStyle[] = ['Balanced', 'Concise', 'Detailed', 'Executive'];
+  readonly models = MODEL_PROFILES;
+  readonly draft = signal<WorkspaceSettings>({ ...this.settingsStore.settings() });
+  readonly selectedModel = computed(() => modelProfile(this.draft().model));
+  readonly hasChanges = computed(() => JSON.stringify(this.draft()) !== JSON.stringify(this.settingsStore.settings()));
+  readonly saved = signal(false);
 
   updateName(value: string): void {
-    this.settingsStore.updateSettings({ profileName: value });
+    this.patch({ profileName: value });
   }
 
   updateRole(value: string): void {
-    this.settingsStore.updateSettings({ profileRole: value });
+    this.patch({ profileRole: value });
   }
 
   updateWorkspace(value: string): void {
-    this.settingsStore.updateSettings({ workspaceName: value });
+    this.patch({ workspaceName: value });
+  }
+
+  updateModel(value: AetherModel): void {
+    this.patch({ model: value });
   }
 
   updateResponseStyle(value: string): void {
     if (this.styles.includes(value as ResponseStyle)) {
-      this.settingsStore.updateSettings({ responseStyle: value as ResponseStyle });
+      this.patch({ responseStyle: value as ResponseStyle });
     }
   }
 
   updateTemperature(value: string): void {
-    this.settingsStore.updateSettings({ temperature: Number(value) });
+    this.patch({ temperature: Number(value) });
+  }
+
+  updateTheme(theme: ThemeMode): void {
+    this.patch({ theme });
+  }
+
+  discard(): void {
+    this.draft.set({ ...this.settingsStore.settings() });
+    this.saved.set(false);
+  }
+
+  save(): void {
+    if (!this.hasChanges()) {
+      return;
+    }
+
+    const modelChanged = this.draft().model !== this.settingsStore.settings().model;
+    this.settingsStore.saveSettings(this.draft());
+    this.draft.set({ ...this.settingsStore.settings() });
+    this.saved.set(true);
+    if (modelChanged) {
+      void this.localAi.reset();
+    }
+    window.setTimeout(() => this.saved.set(false), 2200);
+  }
+
+  private patch(partial: Partial<WorkspaceSettings>): void {
+    this.draft.update((settings) => ({ ...settings, ...partial }));
+    this.saved.set(false);
   }
 }

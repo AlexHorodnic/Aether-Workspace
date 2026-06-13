@@ -1,7 +1,10 @@
 :host {
   display: grid;
-  gap: 1rem;
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  gap: 0.75rem;
   width: min(100%, 93.75rem);
+  height: 100%;
+  min-height: 0;
   margin-inline: auto;
 }
 
@@ -20,7 +23,7 @@
 }
 
 .knowledge-copy {
-  padding: clamp(1.2rem, 3vw, 2rem);
+  padding: 0.85rem 1rem;
   background:
     radial-gradient(circle at 88% -18%, var(--color-accent-soft), transparent 34%),
     var(--gradient-panel);
@@ -41,16 +44,17 @@ h1, h2, p { margin: 0; }
 h1 {
   max-width: 46rem;
   margin-top: 0.55rem;
-  font-size: clamp(2rem, 4.4vw, 3.35rem);
+  font-size: clamp(1.5rem, 2.7vw, 2.2rem);
   line-height: 1;
   letter-spacing: -0.06em;
 }
 
 .knowledge-copy p {
   max-width: 37rem;
-  margin-top: 0.9rem;
+  margin-top: 0.55rem;
   color: var(--color-text-muted);
-  line-height: 1.65;
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
 .drop-zone {
@@ -58,8 +62,8 @@ h1 {
   place-items: center;
   align-content: center;
   gap: 0.55rem;
-  min-height: 16rem;
-  padding: 1.3rem;
+  min-height: 7rem;
+  padding: 0.85rem;
   border-style: dashed;
   cursor: pointer;
   text-align: center;
@@ -88,8 +92,8 @@ h1 {
 
 .workspace-section {
   display: grid;
-  gap: 0.9rem;
-  padding: 1rem;
+  gap: 0.65rem;
+  padding: 0.75rem;
 }
 
 .section-header {
@@ -108,7 +112,7 @@ h2 {
 .collections-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.85rem;
+  gap: 0.65rem;
 }
 
 .knowledge-bottom {
@@ -116,21 +120,65 @@ h2 {
   grid-template-columns: minmax(0, 1fr) minmax(19rem, 25rem);
   gap: 1rem;
   align-items: stretch;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.knowledge-bottom > app-activity-feed {
+  min-height: 0;
+  overflow: hidden;
 }
 
 .file-list {
   display: grid;
+  align-content: start;
   gap: 0.75rem;
+  min-height: 0;
+  overflow: auto;
+}
+
+.files-section {
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
 }
 
 .knowledge-empty {
   display: grid;
-  gap: 0.9rem;
-  justify-items: center;
-  padding: 0.8rem 0 0.4rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-content: center;
+  justify-items: start;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 0;
+  padding: 0.5rem 0.2rem;
+}
+
+.knowledge-empty > span {
+  grid-column: 1;
+  color: var(--color-amber);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.knowledge-empty > strong {
+  grid-column: 1;
+  font-size: 1.05rem;
+}
+
+.knowledge-empty > p {
+  grid-column: 1;
+  max-width: 34rem;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
 }
 
 .empty-upload {
+  grid-column: 2;
+  grid-row: 1 / 4;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -148,8 +196,22 @@ h2 {
   .knowledge-bottom { grid-template-columns: 1fr; }
 }
 
+@media (max-width: 1400px) and (min-width: 1181px) {
+  :host { gap: 0.6rem; }
+  .knowledge-hero { gap: 0.65rem; }
+  .drop-zone { min-height: 5.8rem; padding: 0.65rem; }
+  .workspace-section { gap: 0.5rem; padding: 0.62rem; }
+  .collections-grid { gap: 0.5rem; }
+  .knowledge-bottom { gap: 0.65rem; }
+}
+
 @media (max-width: 820px) {
+  :host { height: auto; }
   .knowledge-hero,
   .collections-grid { grid-template-columns: 1fr; }
   .section-header { align-items: start; flex-direction: column; }
+  .files-section,
+  .file-list { overflow: visible; }
+  .knowledge-empty { grid-template-columns: 1fr; }
+  .empty-upload { grid-column: 1; grid-row: auto; }
 }

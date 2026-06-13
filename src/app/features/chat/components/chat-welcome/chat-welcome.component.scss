@@ -121,6 +121,16 @@ button:hover {
   50% { transform: translateY(-0.25rem) scale(1.035); }
 }
 
+@media (max-height: 800px) and (min-width: 981px) {
+  :host { padding: 1rem; }
+  .welcome { gap: 0.72rem; padding: 1.15rem; }
+  .aether-orb { width: 4.2rem; height: 4.2rem; }
+  .aether-orb span { width: 1.7rem; height: 1.7rem; }
+  h2 { font-size: 2.45rem; }
+  p { line-height: 1.45; }
+  button { min-height: 2.45rem; }
+}
+
 @media (max-width: 560px) {
   :host {
     align-content: start;

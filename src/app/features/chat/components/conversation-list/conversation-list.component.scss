@@ -52,6 +52,10 @@ time,
   padding: 0.75rem;
 }
 
+.conversation-scroll:has(.no-chats) {
+  align-content: center;
+}
+
 .conversation {
   display: grid;
   border: 1px solid transparent;
@@ -162,6 +166,7 @@ time { font-size: 0.7rem; }
   padding: 0.85rem 0.25rem 0.25rem;
   overflow-x: hidden;
   overflow-y: auto;
+  align-content: start;
 }
 
 :host-context(.conversation-sheet) .conversation {

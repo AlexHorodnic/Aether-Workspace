@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewChild, computed, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { LucideFolderOpen, LucideMenu, LucideMessageSquare, LucideSearch, LucideSettings, LucideSparkles } from '@lucide/angular';
+import { modelProfile } from '../../core/models/settings.model';
 import { ChatStoreService } from '../../core/services/chat-store.service';
 import { SettingsStoreService } from '../../core/services/settings-store.service';
 import { CommandPaletteComponent } from '../../shared/components/command-palette/command-palette.component';
@@ -41,6 +42,7 @@ export class WorkspaceLayoutComponent {
   readonly settings = this.settingsStore.settings;
   readonly currentConversation = this.chatStore.selectedConversation;
   readonly userInitials = computed(() => this.settings().profileName.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase());
+  readonly selectedModel = computed(() => modelProfile(this.settings().model));
   readonly navItems: NavItem[] = [
     { label: 'Chat', path: '/chat', icon: 'chat' },
     { label: 'Prompts', path: '/prompts', icon: 'spark' },

@@ -1,23 +1,30 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import type { ChatCompletionMessageParam, WebWorkerMLCEngine } from '@mlc-ai/web-llm';
+import { modelProfile, ModelProfile } from '../models/settings.model';
+import { SettingsStoreService } from './settings-store.service';
 
 export type LocalAiState = 'unsupported' | 'idle' | 'loading' | 'ready' | 'generating' | 'error';
 
-const MODEL_ID = 'SmolLM2-1.7B-Instruct-q4f16_1-MLC';
-
 @Injectable({ providedIn: 'root' })
 export class LocalAiService {
+  private readonly settings = inject(SettingsStoreService);
   private engine: WebWorkerMLCEngine | null = null;
+  private worker: Worker | null = null;
   private readonly stateValue = signal<LocalAiState>(this.hasWebGpu() ? 'idle' : 'unsupported');
   private readonly progressValue = signal(0);
   private readonly statusTextValue = signal(this.hasWebGpu() ? 'Local model not loaded' : 'WebGPU is not available');
+  private readonly activeProfileValue = signal<ModelProfile | null>(null);
+  private readonly usedFallbackValue = signal(false);
 
   readonly state = this.stateValue.asReadonly();
   readonly progress = this.progressValue.asReadonly();
   readonly statusText = this.statusTextValue.asReadonly();
+  readonly activeProfile = this.activeProfileValue.asReadonly();
+  readonly usedFallback = this.usedFallbackValue.asReadonly();
   readonly ready = computed(() => this.stateValue() === 'ready');
   readonly busy = computed(() => this.stateValue() === 'loading' || this.stateValue() === 'generating');
-  readonly modelName = 'SmolLM2 1.7B';
+  readonly selectedProfile = computed(() => modelProfile(this.settings.settings().model));
+  readonly modelName = computed(() => this.activeProfileValue()?.modelName ?? this.selectedProfile().modelName);
 
   async initialize(): Promise<void> {
     if (this.engine || this.stateValue() === 'loading' || !this.hasWebGpu()) {
@@ -26,23 +33,34 @@ export class LocalAiService {
 
     this.stateValue.set('loading');
     this.statusTextValue.set('Preparing private model...');
+    this.usedFallbackValue.set(false);
+    const selected = this.selectedProfile();
     try {
-      const { CreateWebWorkerMLCEngine } = await import('@mlc-ai/web-llm');
-      const worker = new Worker(new URL('../../workers/llm.worker', import.meta.url), { type: 'module' });
-      this.engine = await CreateWebWorkerMLCEngine(worker, MODEL_ID, {
-        initProgressCallback: (report) => {
-          this.progressValue.set(Math.round(report.progress * 100));
-          this.statusTextValue.set(report.text);
-        },
-      });
-      this.progressValue.set(100);
-      this.stateValue.set('ready');
-      this.statusTextValue.set('Private model ready');
+      await this.loadProfile(selected);
     } catch (error) {
-      this.engine = null;
-      this.stateValue.set('error');
-      this.statusTextValue.set(this.errorMessage(error));
+      await this.releaseEngine();
+
+      if (selected.id !== 'fast' && !this.isGpuCompatibilityError(error)) {
+        this.statusTextValue.set(`${selected.modelName} failed. Loading Fast fallback...`);
+        this.usedFallbackValue.set(true);
+        try {
+          await this.loadProfile(modelProfile('fast'));
+          return;
+        } catch (fallbackError) {
+          error = fallbackError;
+        }
+      }
+      await this.fail(error);
     }
+  }
+
+  async reset(): Promise<void> {
+    await this.releaseEngine();
+    this.activeProfileValue.set(null);
+    this.progressValue.set(0);
+    this.usedFallbackValue.set(false);
+    this.stateValue.set(this.hasWebGpu() ? 'idle' : 'unsupported');
+    this.statusTextValue.set(this.hasWebGpu() ? 'Local model not loaded' : 'WebGPU is not available');
   }
 
   async generate(
@@ -77,6 +95,43 @@ export class LocalAiService {
 
   private hasWebGpu(): boolean {
     return typeof navigator !== 'undefined' && 'gpu' in navigator;
+  }
+
+  private async loadProfile(profile: ModelProfile): Promise<void> {
+    const { CreateWebWorkerMLCEngine } = await import('@mlc-ai/web-llm');
+    this.worker = new Worker(new URL('../../workers/llm.worker', import.meta.url), { type: 'module' });
+    this.engine = await CreateWebWorkerMLCEngine(this.worker, profile.modelId, {
+      initProgressCallback: (report) => {
+        this.progressValue.set(Math.round(report.progress * 100));
+        this.statusTextValue.set(report.text);
+      },
+    });
+    this.activeProfileValue.set(profile);
+    this.progressValue.set(100);
+    this.stateValue.set('ready');
+    this.statusTextValue.set(this.usedFallbackValue() ? 'Fast fallback ready' : 'Private model ready');
+  }
+
+  private async fail(error: unknown): Promise<void> {
+    await this.releaseEngine();
+    this.activeProfileValue.set(null);
+    this.stateValue.set('error');
+    this.statusTextValue.set(this.errorMessage(error));
+  }
+
+  private async releaseEngine(): Promise<void> {
+    if (this.engine) {
+      await this.engine.unload().catch(() => undefined);
+    }
+
+    this.worker?.terminate();
+    this.engine = null;
+    this.worker = null;
+  }
+
+  private isGpuCompatibilityError(error: unknown): boolean {
+    const detail = error instanceof Error ? error.message : String(error);
+    return /compatible gpu|webgpu/i.test(detail);
   }
 
   private errorMessage(error: unknown): string {

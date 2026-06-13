@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { KnowledgeFile } from '../../../../core/models/knowledge-file.model';
 import { KnowledgeStoreService } from '../../../../core/services/knowledge-store.service';
-import { EmptyStateComponent } from '../../../../shared/components/empty-state/empty-state.component';
 import { ActivityFeedComponent } from '../../components/activity-feed/activity-feed.component';
 import { CollectionCardComponent, KnowledgeCollection } from '../../components/collection-card/collection-card.component';
 import { FileCardComponent } from '../../components/file-card/file-card.component';
@@ -20,7 +19,6 @@ const COLLECTIONS: Array<Omit<KnowledgeCollection, 'fileCount' | 'indexedCount'>
   selector: 'app-knowledge-base-page',
   imports: [
     CommonModule,
-    EmptyStateComponent,
     ActivityFeedComponent,
     CollectionCardComponent,
     FileCardComponent,

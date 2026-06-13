@@ -4,11 +4,24 @@ A privacy-first AI workspace that runs an open-source language model directly in
 
 ## Why it is different
 
-- **No paid inference API:** WebLLM runs SmolLM2 1.7B with WebGPU on the visitor's device.
+- **No paid inference API:** WebLLM runs the selected open-source model with WebGPU on the visitor's device.
 - **No exposed API key:** there is no shared AI endpoint or browser credential to steal.
 - **Private knowledge retrieval:** PDF and text content is extracted locally, chunked, and stored in IndexedDB.
 - **Cited answers:** relevant chunks are selected locally and included as named sources in chat.
 - **Abuse-resistant architecture:** compute cost belongs to each device, while prompt length, duplicate, cooldown, and per-minute limits prevent accidental local spam.
+
+## Local model profiles
+
+Aether offers four browser-local profiles:
+
+- **Fast:** SmolLM2 1.7B
+- **Balanced:** Llama 3.2 3B
+- **Smart:** Qwen 2.5 3B
+- **High Quality:** Qwen 3 4B
+
+Larger profiles require more GPU memory and take longer to download. When a non-compatibility model load fails, Aether releases the failed worker and retries with the Fast profile. Missing WebGPU is reported directly because switching models cannot fix an unsupported device.
+
+Gemma 3 4B is not listed because it is not currently available in WebLLM's supported prebuilt model catalog. Online search, weather, news, market data, and unrestricted browsing are also intentionally excluded from the frontend-only build: those capabilities require a secured gateway, provider contracts, rate limits, and monitoring rather than exposed browser credentials.
 
 ## Product flow
 
@@ -53,7 +66,7 @@ npm audit --omit=dev
 
 - Documents, prompts, and conversations remain in the current browser profile.
 - Model files are downloaded from the WebLLM/Hugging Face distribution used by the library.
-- WebGPU support and generation speed depend on the browser and device GPU.
+- WebGPU support, model availability, download size, and generation speed depend on the browser and device GPU.
 - Local models are less capable than large hosted models and can still produce inaccurate output.
 - Retrieval is intentionally lightweight and local; it is not a hosted vector database.
 - Clearing browser site data removes stored workspace content.
