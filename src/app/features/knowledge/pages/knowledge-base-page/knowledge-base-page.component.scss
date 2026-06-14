@@ -33,9 +33,9 @@
 .section-header span,
 .upload-kicker {
   color: var(--color-amber);
-  font-size: 0.72rem;
-  font-weight: 850;
-  letter-spacing: 0.12em;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
 }
 
@@ -46,15 +46,15 @@ h1 {
   margin-top: 0.55rem;
   font-size: clamp(1.35rem, 2.3vw, 1.85rem);
   line-height: 1;
-  letter-spacing: -0.06em;
+  letter-spacing: var(--tracking-tight);
 }
 
 .knowledge-copy p {
   max-width: 37rem;
   margin-top: 0.55rem;
   color: var(--color-text-muted);
-  font-size: 0.82rem;
-  line-height: 1.5;
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
 }
 
 .drop-zone {
@@ -132,7 +132,7 @@ h1 {
 h2 {
   margin-top: 0.25rem;
   font-size: clamp(1.1rem, 2vw, 1.45rem);
-  letter-spacing: -0.035em;
+  letter-spacing: var(--tracking-tight);
 }
 
 .collections-grid {
@@ -202,9 +202,9 @@ h2 {
 .knowledge-empty > span {
   grid-column: 1;
   color: var(--color-amber);
-  font-size: 0.68rem;
-  font-weight: 850;
-  letter-spacing: 0.1em;
+  font-size: var(--text-2xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
 }
 
@@ -217,7 +217,7 @@ h2 {
   grid-column: 1;
   max-width: 34rem;
   color: var(--color-text-muted);
-  font-size: 0.78rem;
+  font-size: var(--text-sm);
   line-height: 1.4;
 }
 
@@ -233,7 +233,7 @@ h2 {
   background: var(--gradient-brand);
   color: var(--color-on-brand);
   cursor: pointer;
-  font-weight: 820;
+  font-weight: var(--font-weight-bold);
 }
 
 @media (max-width: 1180px) {

@@ -28,7 +28,7 @@
   border-radius: 0.9rem;
   background: var(--color-primary-soft);
   color: var(--color-primary-hover);
-  font-weight: 900;
+  font-weight: var(--font-weight-display);
 }
 
 h3, p { margin: 0; }
@@ -39,8 +39,8 @@ p {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   color: var(--color-text-muted);
-  font-size: 0.75rem;
-  line-height: 1.35;
+  font-size: var(--text-xs);
+  line-height: var(--leading-snug);
 }
 
 footer {
@@ -55,6 +55,6 @@ span {
   padding: 0.22rem 0.42rem;
   background: color-mix(in srgb, var(--color-surface-soft) 70%, transparent);
   color: var(--color-text-muted);
-  font-size: 0.66rem;
-  font-weight: 760;
+  font-size: var(--text-2xs);
+  font-weight: var(--font-weight-semibold);
 }

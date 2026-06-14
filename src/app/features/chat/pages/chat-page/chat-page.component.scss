@@ -62,16 +62,16 @@
   background: color-mix(in srgb, var(--color-surface) 86%, transparent);
   color: var(--color-text);
   cursor: pointer;
-  font-weight: 850;
+  font-weight: var(--font-weight-bold);
 }
 
 .chat-header > * { position: relative; }
 
 .chat-header > div:first-child > span {
   color: var(--color-amber);
-  font-size: 0.72rem;
-  font-weight: 850;
-  letter-spacing: 0.12em;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
 }
 
@@ -85,7 +85,7 @@ h1 {
   white-space: nowrap;
   font-size: clamp(1.15rem, 2vw, 1.5rem);
   line-height: 1.05;
-  letter-spacing: -0.04em;
+  letter-spacing: var(--tracking-tight);
 }
 
 .model-status {
@@ -129,12 +129,12 @@ h1 {
 
 .model-status strong {
   color: var(--color-text);
-  font-size: 0.78rem;
+  font-size: var(--text-sm);
 }
 
 .model-status small {
   color: var(--color-text-muted);
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
 }
 
 .model-status button {
@@ -144,8 +144,8 @@ h1 {
   background: var(--gradient-brand);
   color: var(--color-on-brand);
   cursor: pointer;
-  font-size: 0.72rem;
-  font-weight: 900;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-display);
 }
 
 .conversation-backdrop,
@@ -214,9 +214,9 @@ h1 {
   .sheet-head div { display: grid; gap: 0.1rem; }
   .sheet-head span {
     color: var(--color-amber);
-    font-size: 0.72rem;
-    font-weight: 850;
-    letter-spacing: 0.12em;
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-label);
     text-transform: uppercase;
   }
   .sheet-head button {
@@ -236,7 +236,7 @@ h1 {
   }
   .sheet-actions span {
     color: var(--color-text-muted);
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
   }
   .sheet-actions button {
     min-height: 2.35rem;
@@ -246,7 +246,7 @@ h1 {
     background: var(--gradient-brand);
     color: var(--color-on-brand);
     cursor: pointer;
-    font-weight: 900;
+    font-weight: var(--font-weight-display);
   }
   .conversation-sheet app-conversation-list { min-height: 0; }
 }

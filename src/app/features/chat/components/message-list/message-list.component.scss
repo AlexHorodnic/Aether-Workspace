@@ -32,8 +32,8 @@
   margin-top: 0.15rem;
   border: 1px solid var(--color-border);
   border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 900;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-display);
   letter-spacing: -0.02em;
 }
 
@@ -73,16 +73,16 @@
 
 .role {
   color: var(--color-amber);
-  font-size: 0.68rem;
-  font-weight: 850;
-  letter-spacing: 0.1em;
+  font-size: var(--text-2xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
 }
 
 p {
   margin: 0;
   color: var(--color-text);
-  line-height: 1.62;
+  line-height: var(--leading-relaxed)2;
   white-space: pre-wrap;
 }
 
@@ -104,12 +104,12 @@ p {
 
 .answer-meta > span {
   color: var(--color-text-subtle);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
 }
 
 .answer-meta.no-match > span {
   color: var(--color-amber);
-  font-weight: 760;
+  font-weight: var(--font-weight-semibold);
 }
 
 .answer-meta div {
@@ -124,7 +124,7 @@ p {
   background: transparent;
   color: var(--color-text-muted);
   cursor: pointer;
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
 }
 
 .answer-meta button:hover {
@@ -134,7 +134,7 @@ p {
 
 .sources > strong {
   color: var(--color-text-muted);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -148,14 +148,14 @@ p {
 .sources summary {
   cursor: pointer;
   color: var(--color-primary);
-  font-size: 0.8rem;
-  font-weight: 800;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-bold);
 }
 
 .sources details p {
   padding-top: 0.4rem;
   color: var(--color-text-muted);
-  font-size: 0.78rem;
+  font-size: var(--text-sm);
 }
 
 .typing {
@@ -187,7 +187,7 @@ p {
     width: 1.8rem;
     height: 1.8rem;
     border-color: color-mix(in srgb, var(--color-border) 46%, transparent);
-    font-size: 0.66rem;
+    font-size: var(--text-2xs);
   }
   .bubble {
     max-width: calc(100% - 2.3rem);

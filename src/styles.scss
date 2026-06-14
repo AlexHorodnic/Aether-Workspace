@@ -1,3 +1,5 @@
+@import '@fontsource-variable/geist/wght.css';
+
 :root {
   color-scheme: dark;
   --color-bg: #0f0b14;
@@ -32,7 +34,25 @@
   --shadow-card: 0 1.5rem 4rem rgb(0 0 0 / 0.36), inset 0 1px 0 rgb(255 255 255 / 0.035);
   --shadow-modal: 0 2.5rem 6rem rgb(0 0 0 / 0.62);
   --shadow-glow: 0 0.9rem 3rem rgb(178 108 255 / 0.22);
-  --font-sans: 'Space Grotesk', 'Aptos Display', 'Segoe UI Variable Display', sans-serif;
+  --font-sans: 'Geist Variable', 'Geist', 'Inter', 'Segoe UI Variable', 'Segoe UI', sans-serif;
+  --font-mono: 'SFMono-Regular', 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-display: 780;
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-lg: 1rem;
+  --text-xl: 1.25rem;
+  --leading-tight: 1.08;
+  --leading-snug: 1.35;
+  --leading-body: 1.55;
+  --leading-relaxed: 1.65;
+  --tracking-tight: -0.035em;
+  --tracking-label: 0.1em;
 
   --bg: var(--color-bg);
   --surface-1: var(--color-bg-elevated);
@@ -114,8 +134,14 @@ body {
     var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-body);
+  font-optical-sizing: auto;
+  font-synthesis: none;
   -webkit-font-smoothing: antialiased;
-  text-rendering: geometricPrecision;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 button,
@@ -123,6 +149,7 @@ input,
 textarea,
 select {
   font: inherit;
+  letter-spacing: inherit;
 }
 
 select {
@@ -136,9 +163,31 @@ select {
 
 h1,
 h2,
-h3,
+h3 {
+  margin-block: 0;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-tight);
+  text-wrap: balance;
+}
+
 p {
   overflow-wrap: anywhere;
+}
+
+small {
+  font-size: var(--text-xs);
+}
+
+strong,
+b {
+  font-weight: var(--font-weight-semibold);
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-mono);
 }
 
 button:focus-visible,

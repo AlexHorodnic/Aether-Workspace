@@ -19,6 +19,7 @@
     "@angular/forms": "^21.2.0",
     "@angular/platform-browser": "^21.2.0",
     "@angular/router": "^21.2.0",
+    "@fontsource-variable/geist": "^5.2.9",
     "@lucide/angular": "^1.17.0",
     "@mlc-ai/web-llm": "^0.2.83",
     "pdfjs-dist": "^6.0.227",

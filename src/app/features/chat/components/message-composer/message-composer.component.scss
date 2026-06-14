@@ -25,9 +25,9 @@
 label {
   padding-inline: 0.25rem;
   color: var(--color-amber);
-  font-size: 0.68rem;
-  font-weight: 850;
-  letter-spacing: 0.12em;
+  font-size: var(--text-2xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
 }
 
@@ -53,13 +53,13 @@ label {
   padding: 0 1.8rem 0 0.6rem;
   background: var(--color-surface-soft);
   color: var(--color-text);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
 }
 
 .composer-context > span {
   overflow: hidden;
   color: var(--color-text-subtle);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -73,7 +73,7 @@ textarea {
   background: transparent;
   color: var(--color-text);
   font: inherit;
-  line-height: 1.55;
+  line-height: var(--leading-body)5;
   outline: 0;
 }
 
@@ -92,7 +92,7 @@ textarea::placeholder {
   border-radius: 0.7rem;
   background: color-mix(in srgb, #ef6464 12%, transparent);
   color: #ff9a9a;
-  font-size: 0.8rem;
+  font-size: var(--text-sm);
 }
 
 .composer-actions {
@@ -104,7 +104,7 @@ textarea::placeholder {
 
 .composer-actions span {
   color: var(--color-text-subtle);
-  font-size: 0.78rem;
+  font-size: var(--text-sm);
 }
 
 button {
@@ -114,7 +114,7 @@ button {
   padding: 0.62rem 0.95rem;
   background: var(--gradient-brand);
   color: var(--color-on-brand);
-  font-weight: 900;
+  font-weight: var(--font-weight-display);
   cursor: pointer;
   transition: transform 150ms ease, opacity 150ms ease;
 }
@@ -156,7 +156,7 @@ button.stop {
   .composer-actions { align-items: stretch; flex-direction: column; gap: 0.7rem; }
   .composer-context { flex-wrap: wrap; }
   .composer-context > span { width: 100%; }
-  .composer-actions span { font-size: 0.74rem; }
+  .composer-actions span { font-size: var(--text-xs); }
   button {
     border-color: transparent;
     box-shadow: 0 0.55rem 1.25rem color-mix(in srgb, var(--color-primary) 18%, transparent);

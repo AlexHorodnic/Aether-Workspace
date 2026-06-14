@@ -44,6 +44,7 @@ Prompt templates open as editable chat drafts instead of sending placeholder tex
 
 - Angular 21 standalone components with feature-first lazy routes
 - Signals and computed state for UI and workspace stores
+- Self-hosted Geist Variable typography with shared size, weight, line-height, and tracking tokens
 - Web Worker-based WebLLM inference to keep generation off the UI thread
 - PDF.js and browser file APIs for local extraction
 - IndexedDB for document contents; guarded local storage for lightweight preferences and chat history

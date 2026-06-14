@@ -73,7 +73,7 @@ kbd {
   padding: 0.18rem 0.42rem;
   color: var(--color-text-muted);
   background: var(--color-surface-soft);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   line-height: 1.2;
 }
 
@@ -94,9 +94,9 @@ h3 {
   margin: 0;
   padding: 0.1rem 0.45rem;
   color: var(--color-text-subtle);
-  font-size: 0.68rem;
-  font-weight: 850;
-  letter-spacing: 0.13em;
+  font-size: var(--text-2xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
 }
 
@@ -162,7 +162,7 @@ h3 {
 
 .item-copy strong {
   font-size: 0.95rem;
-  font-weight: 780;
+  font-weight: var(--font-weight-semibold);
 }
 
 .item-copy small,
@@ -191,7 +191,7 @@ h3 {
   border-top: 1px solid var(--color-border);
   background: color-mix(in srgb, var(--color-bg-elevated) 72%, transparent);
   color: var(--color-text-subtle);
-  font-size: 0.78rem;
+  font-size: var(--text-sm);
 }
 
 .palette-hints span {

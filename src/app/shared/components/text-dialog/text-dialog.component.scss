@@ -52,19 +52,19 @@ p { margin: 0; }
 h2 {
   color: var(--color-text);
   font-size: 1.25rem;
-  letter-spacing: -0.035em;
+  letter-spacing: var(--tracking-tight);
 }
 
 p {
   color: var(--color-text-muted);
-  line-height: 1.6;
+  line-height: var(--leading-relaxed);
 }
 
 label {
   color: var(--color-amber);
-  font-size: 0.72rem;
-  font-weight: 850;
-  letter-spacing: 0.1em;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
 }
 
@@ -96,7 +96,7 @@ button {
   border-radius: 999px;
   padding: 0 1rem;
   color: var(--color-text);
-  font-weight: 850;
+  font-weight: var(--font-weight-bold);
   cursor: pointer;
 }
 

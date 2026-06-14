@@ -54,12 +54,12 @@ p {
 h2 {
   color: var(--color-text);
   font-size: 1.25rem;
-  letter-spacing: -0.035em;
+  letter-spacing: var(--tracking-tight);
 }
 
 p {
   color: var(--color-text-muted);
-  line-height: 1.6;
+  line-height: var(--leading-relaxed);
 }
 
 .dialog-actions {
@@ -75,7 +75,7 @@ button {
   border-radius: 999px;
   padding: 0 1rem;
   color: var(--color-text);
-  font-weight: 850;
+  font-weight: var(--font-weight-bold);
   cursor: pointer;
 }
 
