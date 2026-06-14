@@ -122,12 +122,13 @@
 
 html,
 body {
+  height: 100%;
   min-height: 100%;
   margin: 0;
+  overflow: hidden;
 }
 
 body {
-  overflow-x: hidden;
   background:
     radial-gradient(circle at 15% -8%, var(--color-primary-soft), transparent 32rem),
     radial-gradient(circle at 88% 8%, var(--color-accent-soft), transparent 30rem),
