@@ -7,6 +7,13 @@ export interface MessageSource {
   excerpt: string;
 }
 
+export type SourceScopeKind = 'all' | 'none' | 'collection';
+
+export interface SourceScope {
+  kind: SourceScopeKind;
+  collection?: string;
+}
+
 export interface ChatMessage {
   id: string;
   role: ChatRole;
@@ -14,6 +21,7 @@ export interface ChatMessage {
   createdAt: number;
   status: MessageStatus;
   sources?: MessageSource[];
+  sourceScopeLabel?: string;
 }
 
 export interface Conversation {

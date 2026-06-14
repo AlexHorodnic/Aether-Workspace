@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatStoreService } from '../../../../core/services/chat-store.service';
+import { KnowledgeStoreService } from '../../../../core/services/knowledge-store.service';
 import { LocalAiService } from '../../../../core/services/local-ai.service';
 
 @Component({
@@ -13,13 +14,12 @@ import { LocalAiService } from '../../../../core/services/local-ai.service';
 export class MessageComposerComponent {
   private readonly chatStore = inject(ChatStoreService);
   readonly localAi = inject(LocalAiService);
+  readonly knowledge = inject(KnowledgeStoreService);
   readonly store = this.chatStore;
-
-  readonly draft = signal('');
+  readonly draft = this.chatStore.composerDraft;
 
   updateDraft(value: string): void {
-    this.draft.set(value);
-    this.chatStore.clearComposerError();
+    this.chatStore.updateComposerDraft(value);
   }
 
   handleKeydown(event: KeyboardEvent): void {
@@ -38,6 +38,19 @@ export class MessageComposerComponent {
     }
 
     void this.chatStore.sendMessage(message);
-    this.draft.set('');
+  }
+
+  setScope(value: string): void {
+    if (value === 'none') {
+      this.chatStore.setSourceScope({ kind: 'none' });
+    } else if (value === 'all') {
+      this.chatStore.setSourceScope({ kind: 'all' });
+    } else {
+      this.chatStore.setSourceScope({ kind: 'collection', collection: value });
+    }
+  }
+
+  stop(): void {
+    this.chatStore.stopGeneration();
   }
 }

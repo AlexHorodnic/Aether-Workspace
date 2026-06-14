@@ -261,7 +261,7 @@ export class CommandPaletteComponent {
       section: 'Prompts',
       icon: 'prompt',
       run: () => {
-        this.chatStore.sendPrompt(prompt.content);
+        this.chatStore.preparePrompt(prompt.content);
         void this.router.navigate(['/chat']);
       },
     }));

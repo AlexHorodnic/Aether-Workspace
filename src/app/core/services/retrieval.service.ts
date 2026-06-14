@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { MessageSource } from '../models/chat.models';
+import { MessageSource, SourceScope } from '../models/chat.models';
 import { IndexedDocumentStoreService } from './indexed-document-store.service';
+import { KnowledgeStoreService } from './knowledge-store.service';
 
 export interface RetrievalContext {
   context: string;
@@ -10,8 +11,13 @@ export interface RetrievalContext {
 @Injectable({ providedIn: 'root' })
 export class RetrievalService {
   private readonly documents = inject(IndexedDocumentStoreService);
+  private readonly knowledge = inject(KnowledgeStoreService);
 
-  async retrieve(query: string, limit = 4): Promise<RetrievalContext> {
+  async retrieve(query: string, scope: SourceScope = { kind: 'all' }, limit = 4): Promise<RetrievalContext> {
+    if (scope.kind === 'none') {
+      return { context: '', sources: [] };
+    }
+
     const terms = this.terms(query);
     if (!terms.length) {
       return { context: '', sources: [] };
@@ -23,7 +29,11 @@ export class RetrievalService {
     } catch {
       return { context: '', sources: [] };
     }
+    const allowedIds = scope.kind === 'collection'
+      ? new Set(this.knowledge.files().filter((file) => file.collection === scope.collection && file.status === 'Indexed').map((file) => file.id))
+      : null;
     const ranked = documents
+      .filter((document) => !allowedIds || allowedIds.has(document.id))
       .flatMap((document) => document.chunks.map((chunk) => ({
         document,
         chunk,

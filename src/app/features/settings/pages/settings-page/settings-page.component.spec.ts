@@ -61,4 +61,13 @@ describe('SettingsPageComponent', () => {
 
     expect(localAi.reset).toHaveBeenCalledOnce();
   });
+
+  it('uses understandable creativity presets', () => {
+    const component = TestBed.createComponent(SettingsPageComponent).componentInstance;
+
+    component.setCreativity(0.2);
+
+    expect(component.draft().temperature).toBe(0.2);
+    expect(component.hasChanges()).toBe(true);
+  });
 });

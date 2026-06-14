@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
 export interface KnowledgeCollection {
   name: string;
@@ -15,4 +15,6 @@ export interface KnowledgeCollection {
 })
 export class CollectionCardComponent {
   readonly collection = input.required<KnowledgeCollection>();
+  readonly active = input(false);
+  readonly selected = output<string>();
 }

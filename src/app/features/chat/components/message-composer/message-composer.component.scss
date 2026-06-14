@@ -31,6 +31,39 @@ label {
   text-transform: uppercase;
 }
 
+.composer-context {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.composer-context label {
+  padding: 0;
+  color: var(--color-text-muted);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.composer-context select {
+  max-width: 14rem;
+  min-height: 2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.65rem;
+  padding: 0 1.8rem 0 0.6rem;
+  background: var(--color-surface-soft);
+  color: var(--color-text);
+  font-size: 0.75rem;
+}
+
+.composer-context > span {
+  overflow: hidden;
+  color: var(--color-text-subtle);
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 textarea {
   width: 100%;
   min-height: 3.6rem;
@@ -96,6 +129,12 @@ button:disabled {
   opacity: 0.42;
 }
 
+button.stop {
+  border-color: color-mix(in srgb, var(--color-danger) 42%, transparent);
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
 @media (max-width: 560px) {
   :host {
     padding: 0 0.7rem 0.75rem;
@@ -115,6 +154,8 @@ button:disabled {
   label { color: color-mix(in srgb, var(--color-amber) 76%, var(--color-text-muted)); }
   textarea { min-height: 3.15rem; }
   .composer-actions { align-items: stretch; flex-direction: column; gap: 0.7rem; }
+  .composer-context { flex-wrap: wrap; }
+  .composer-context > span { width: 100%; }
   .composer-actions span { font-size: 0.74rem; }
   button {
     border-color: transparent;

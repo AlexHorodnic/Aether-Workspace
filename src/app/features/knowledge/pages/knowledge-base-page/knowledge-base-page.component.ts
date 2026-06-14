@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { KnowledgeFile } from '../../../../core/models/knowledge-file.model';
 import { KnowledgeStoreService } from '../../../../core/services/knowledge-store.service';
 import { ActivityFeedComponent } from '../../components/activity-feed/activity-feed.component';
@@ -19,6 +20,7 @@ const COLLECTIONS: Array<Omit<KnowledgeCollection, 'fileCount' | 'indexedCount'>
   selector: 'app-knowledge-base-page',
   imports: [
     CommonModule,
+    FormsModule,
     ActivityFeedComponent,
     CollectionCardComponent,
     FileCardComponent,
@@ -31,6 +33,8 @@ const COLLECTIONS: Array<Omit<KnowledgeCollection, 'fileCount' | 'indexedCount'>
 export class KnowledgeBasePageComponent {
   readonly knowledgeStore = inject(KnowledgeStoreService);
   readonly dragging = signal(false);
+  readonly search = signal('');
+  readonly selectedCollection = signal<string | null>(null);
   readonly collections = computed<KnowledgeCollection[]>(() => COLLECTIONS.map((collection) => {
     const files = this.knowledgeStore.files().filter((file) => this.collectionForFile(file) === collection.name);
     return {
@@ -41,6 +45,14 @@ export class KnowledgeBasePageComponent {
   }));
 
   readonly activeCollectionCount = computed(() => this.collections().filter((collection) => collection.fileCount > 0).length);
+  readonly filteredFiles = computed(() => {
+    const query = this.search().trim().toLowerCase();
+    const collection = this.selectedCollection();
+    return this.knowledgeStore.files().filter((file) => (
+      (!collection || file.collection === collection)
+      && (!query || `${file.name} ${file.type} ${file.collection} ${file.status}`.toLowerCase().includes(query))
+    ));
+  });
 
   readonly collectionForFile = (file: KnowledgeFile): string => {
     return file.collection;
@@ -74,5 +86,14 @@ export class KnowledgeBasePageComponent {
 
   updateCollection(fileId: string, collection: string): void {
     this.knowledgeStore.updateCollection(fileId, collection);
+  }
+
+  selectCollection(collection: string): void {
+    this.selectedCollection.update((current) => current === collection ? null : collection);
+  }
+
+  clearFilters(): void {
+    this.search.set('');
+    this.selectedCollection.set(null);
   }
 }

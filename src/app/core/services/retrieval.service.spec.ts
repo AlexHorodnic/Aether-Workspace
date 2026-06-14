@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { IndexedDocumentStoreService } from './indexed-document-store.service';
+import { KnowledgeStoreService } from './knowledge-store.service';
 import { RetrievalService } from './retrieval.service';
 
 describe('RetrievalService', () => {
@@ -19,12 +20,19 @@ describe('RetrievalService', () => {
       },
     ]),
   };
+  const knowledge = {
+    files: vi.fn(() => [
+      { id: 'angular', collection: 'Engineering', status: 'Indexed' },
+      { id: 'marketing', collection: 'Research', status: 'Indexed' },
+    ]),
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         RetrievalService,
         { provide: IndexedDocumentStoreService, useValue: documents },
+        { provide: KnowledgeStoreService, useValue: knowledge },
       ],
     });
   });
@@ -37,6 +45,20 @@ describe('RetrievalService', () => {
 
   it('returns no context when nothing matches', async () => {
     const result = await TestBed.inject(RetrievalService).retrieve('quantum chemistry');
+    expect(result).toEqual({ context: '', sources: [] });
+  });
+
+  it('limits retrieval to the selected collection', async () => {
+    const result = await TestBed.inject(RetrievalService).retrieve(
+      'product leaders Angular signals',
+      { kind: 'collection', collection: 'Research' },
+    );
+
+    expect(result.sources.map((source) => source.fileName)).toEqual(['campaign.md']);
+  });
+
+  it('skips workspace retrieval for general knowledge mode', async () => {
+    const result = await TestBed.inject(RetrievalService).retrieve('Angular signals', { kind: 'none' });
     expect(result).toEqual({ context: '', sources: [] });
   });
 });

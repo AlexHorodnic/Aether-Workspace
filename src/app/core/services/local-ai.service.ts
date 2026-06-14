@@ -93,6 +93,16 @@ export class LocalAiService {
     }
   }
 
+  async stop(): Promise<void> {
+    if (!this.engine || this.stateValue() !== 'generating') {
+      return;
+    }
+
+    await this.engine.interruptGenerate();
+    this.stateValue.set('ready');
+    this.statusTextValue.set('Generation stopped');
+  }
+
   private hasWebGpu(): boolean {
     return typeof navigator !== 'undefined' && 'gpu' in navigator;
   }

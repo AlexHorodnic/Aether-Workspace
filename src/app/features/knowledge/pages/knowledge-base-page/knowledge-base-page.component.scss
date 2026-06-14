@@ -44,7 +44,7 @@ h1, h2, p { margin: 0; }
 h1 {
   max-width: 46rem;
   margin-top: 0.55rem;
-  font-size: clamp(1.5rem, 2.7vw, 2.2rem);
+  font-size: clamp(1.35rem, 2.3vw, 1.85rem);
   line-height: 1;
   letter-spacing: -0.06em;
 }
@@ -101,6 +101,32 @@ h1 {
   align-items: end;
   justify-content: space-between;
   gap: 1rem;
+}
+
+.file-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.file-tools input {
+  width: min(16rem, 28vw);
+  min-height: 2.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.7rem;
+  padding: 0 0.7rem;
+  background: var(--color-surface-soft);
+  color: var(--color-text);
+}
+
+.file-tools button {
+  min-height: 2.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.7rem;
+  padding: 0 0.7rem;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
 }
 
 h2 {
@@ -210,8 +236,14 @@ h2 {
   .knowledge-hero,
   .collections-grid { grid-template-columns: 1fr; }
   .section-header { align-items: start; flex-direction: column; }
+  .file-tools,
+  .file-tools input { width: 100%; }
   .files-section,
   .file-list { overflow: visible; }
   .knowledge-empty { grid-template-columns: 1fr; }
   .empty-upload { grid-column: 1; grid-row: auto; }
+  .knowledge-copy,
+  .drop-zone,
+  .workspace-section,
+  .knowledge-bottom { min-width: 0; }
 }

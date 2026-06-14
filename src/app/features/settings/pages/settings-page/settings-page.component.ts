@@ -30,6 +30,11 @@ export class SettingsPageComponent {
   readonly selectedModel = computed(() => modelProfile(this.draft().model));
   readonly hasChanges = computed(() => JSON.stringify(this.draft()) !== JSON.stringify(this.settingsStore.settings()));
   readonly saved = signal(false);
+  readonly creativityPresets = [
+    { label: 'Precise', value: 0.2, description: 'Consistent factual answers' },
+    { label: 'Balanced', value: 0.62, description: 'Useful default for most work' },
+    { label: 'Creative', value: 0.9, description: 'More varied language and ideas' },
+  ] as const;
 
   updateName(value: string): void {
     this.patch({ profileName: value });
@@ -53,8 +58,8 @@ export class SettingsPageComponent {
     }
   }
 
-  updateTemperature(value: string): void {
-    this.patch({ temperature: Number(value) });
+  setCreativity(value: number): void {
+    this.patch({ temperature: value });
   }
 
   updateTheme(theme: ThemeMode): void {

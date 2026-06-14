@@ -1,8 +1,6 @@
 <button type="button" class="backdrop" aria-label="Close prompt details" (click)="close.emit()"></button>
 
 <aside class="prompt-modal" role="dialog" aria-modal="true" [attr.aria-label]="prompt().title" tabindex="-1">
-  @let usage = usageFor(prompt());
-
   <header class="modal-header">
     <div>
       <span>Prompt Details</span>
@@ -33,17 +31,6 @@
     <pre>{{ prompt().content }}</pre>
   </section>
 
-  <section class="usage-section" aria-label="Prompt usage">
-    <div class="section-heading">
-      <span>Usage</span>
-    </div>
-    <div class="usage-grid">
-      <span>{{ usage.used }}</span>
-      <span>{{ usage.estimate }}</span>
-      <span>{{ usage.lastLaunched }}</span>
-    </div>
-  </section>
-
   <footer class="modal-actions">
     <button type="button" class="secondary-action" (click)="copyPrompt(prompt().content)">
       <svg lucideCopy size="15" aria-hidden="true"></svg>
@@ -51,7 +38,7 @@
     </button>
     <button type="button" class="primary-action" (click)="launch.emit(prompt())">
       <svg lucideRocket size="15" aria-hidden="true"></svg>
-      Launch Prompt
+      Edit in Chat
     </button>
   </footer>
 </aside>

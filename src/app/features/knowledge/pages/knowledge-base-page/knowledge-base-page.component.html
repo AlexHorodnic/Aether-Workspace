@@ -32,24 +32,34 @@
 
   <div class="collections-grid">
     @for (collection of collections(); track collection.name) {
-      <app-collection-card [collection]="collection" />
+      <app-collection-card
+        [collection]="collection"
+        [active]="selectedCollection() === collection.name"
+        (selected)="selectCollection($event)"
+      />
     }
   </div>
 </section>
 
 <section class="knowledge-bottom">
   <section class="workspace-section files-section" aria-labelledby="files-title">
-    <div class="section-header">
+    <div class="section-header files-header">
       <div>
         <span>Files</span>
         <h2 id="files-title">Indexed workspace sources</h2>
       </div>
-      <p>{{ knowledgeStore.files().length }} uploaded files.</p>
+      <div class="file-tools">
+        <input type="search" [ngModel]="search()" (ngModelChange)="search.set($event)" placeholder="Search files..." aria-label="Search knowledge files" />
+        @if (search() || selectedCollection()) {
+          <button type="button" (click)="clearFilters()">Clear</button>
+        }
+      </div>
     </div>
 
     @if (knowledgeStore.files().length) {
-      <div class="file-list" aria-label="Uploaded files">
-        @for (file of knowledgeStore.files(); track file.id) {
+      @if (filteredFiles().length) {
+        <div class="file-list" aria-label="Uploaded files">
+        @for (file of filteredFiles(); track file.id) {
           <app-knowledge-file-card
             [file]="file"
             [collection]="collectionForFile(file)"
@@ -58,7 +68,15 @@
             (remove)="knowledgeStore.removeFile($event)"
           />
         }
-      </div>
+        </div>
+      } @else {
+        <div class="knowledge-empty">
+          <span>No matches</span>
+          <strong>No files match the current filters</strong>
+          <p>Search by file name, type, status, or choose another collection.</p>
+          <button type="button" class="empty-upload" (click)="clearFilters()">Clear filters</button>
+        </div>
+      }
     } @else {
       <div class="knowledge-empty">
         <span>Ready for sources</span>

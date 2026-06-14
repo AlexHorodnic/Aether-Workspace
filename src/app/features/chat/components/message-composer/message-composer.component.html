@@ -1,5 +1,16 @@
 ﻿<div class="composer-shell">
-  <label for="chat-message">Message Aether</label>
+  <div class="composer-context">
+    <label for="source-scope">Answer using</label>
+    <select id="source-scope" [value]="store.sourceScope().kind === 'collection' ? store.sourceScope().collection : store.sourceScope().kind" (change)="setScope($any($event.target).value)">
+      <option value="all">All indexed sources</option>
+      <option value="none">General knowledge only</option>
+      @for (collection of knowledge.collections; track collection) {
+        <option [value]="collection">{{ collection }}</option>
+      }
+    </select>
+    <span>{{ store.sourceScopeLabel() }}</span>
+  </div>
+  <label class="sr-only" for="chat-message">Message Aether</label>
   <textarea
     id="chat-message"
     rows="3"
@@ -21,8 +32,10 @@
         Activate the local model above to begin
       }
     </span>
-    <button type="button" [disabled]="!draft().trim() || !localAi.ready() || localAi.busy()" (click)="send()">
-      {{ localAi.state() === 'generating' ? 'Thinking...' : 'Send' }}
-    </button>
+    @if (localAi.state() === 'generating') {
+      <button type="button" class="stop" (click)="stop()">Stop</button>
+    } @else {
+      <button type="button" [disabled]="!draft().trim() || !localAi.ready() || localAi.busy()" (click)="send()">Send</button>
+    }
   </div>
 </div>

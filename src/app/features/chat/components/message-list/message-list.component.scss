@@ -94,6 +94,39 @@ p {
   border-top: 1px solid color-mix(in srgb, var(--color-border) 58%, transparent);
 }
 
+.answer-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.25rem;
+}
+
+.answer-meta > span {
+  color: var(--color-text-subtle);
+  font-size: 0.72rem;
+}
+
+.answer-meta div {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.answer-meta button {
+  border: 0;
+  border-radius: 0.55rem;
+  padding: 0.35rem 0.5rem;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 0.72rem;
+}
+
+.answer-meta button:hover {
+  background: var(--color-surface-soft);
+  color: var(--color-text);
+}
+
 .sources > strong {
   color: var(--color-text-muted);
   font-size: 0.72rem;

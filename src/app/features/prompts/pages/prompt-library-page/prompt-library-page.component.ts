@@ -54,7 +54,7 @@ export class PromptLibraryPageComponent {
   }
 
   usePrompt(content: string): void {
-    this.chatStore.sendPrompt(content);
+    this.chatStore.preparePrompt(content);
     void this.router.navigate(['/chat']);
   }
 

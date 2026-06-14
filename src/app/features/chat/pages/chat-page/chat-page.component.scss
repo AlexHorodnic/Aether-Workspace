@@ -261,8 +261,13 @@ h1 {
   .chat-header { align-items: start; display: grid; grid-template-columns: minmax(0, 1fr) auto; }
   .model-status {
     grid-column: 1 / -1;
+    grid-template-columns: auto minmax(0, 1fr);
     width: 100%;
     min-width: 0;
+  }
+  .model-status button {
+    grid-column: 1 / -1;
+    width: 100%;
   }
   h1 { white-space: normal; }
 }

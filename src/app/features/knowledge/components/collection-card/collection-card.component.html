@@ -1,4 +1,4 @@
-<article class="collection-card">
+<button type="button" class="collection-card" [class.active]="active()" (click)="selected.emit(collection().name)">
   <div class="collection-icon" aria-hidden="true">{{ collection().name.slice(0, 1) }}</div>
   <div>
     <h3>{{ collection().name }}</h3>
@@ -8,4 +8,4 @@
     <span>{{ collection().fileCount }} files</span>
     <span>{{ collection().indexedCount }} indexed</span>
   </footer>
-</article>
+</button>

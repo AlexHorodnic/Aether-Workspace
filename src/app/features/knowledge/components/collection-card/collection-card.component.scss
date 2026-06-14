@@ -8,6 +8,16 @@
   background:
     radial-gradient(circle at 90% 0%, var(--color-amber-soft), transparent 38%),
     color-mix(in srgb, var(--color-surface) 88%, transparent);
+  color: var(--color-text);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.collection-card.active {
+  border-color: color-mix(in srgb, var(--color-primary) 55%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 9%, var(--color-surface));
+  box-shadow: inset 0 0 0 1px var(--color-primary-soft);
 }
 
 .collection-icon {

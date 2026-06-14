@@ -1,17 +1,27 @@
 <section class="welcome" aria-label="Aether welcome">
-  <div class="aether-orb" aria-hidden="true">
-    <span></span>
+  <div class="welcome-copy">
+    <span>Private workspace</span>
+    <h2>Start with a ready local workspace.</h2>
+    <p>Load a model, add sources when you need grounded answers, then ask a focused question.</p>
   </div>
 
-  <div class="welcome-copy">
-    <span>AI Studio</span>
-    <h2>Welcome to Aether</h2>
-    <p>Start a focused conversation, launch a reusable prompt, or connect knowledge files for a more grounded workspace.</p>
+  <div class="readiness" aria-label="Workspace readiness">
+    <article [class.complete]="localAi.ready()">
+      <span>1</span>
+      <div><strong>Local model</strong><small>{{ localAi.ready() ? 'Ready on this device' : 'Required before chatting' }}</small></div>
+      @if (!localAi.ready()) {
+        <button type="button" (click)="activateModel()" [disabled]="localAi.busy()">Activate</button>
+      }
+    </article>
+    <article [class.complete]="knowledge.files().length > 0">
+      <span>2</span>
+      <div><strong>Workspace sources</strong><small>{{ knowledge.files().length ? knowledge.files().length + ' files available' : 'Optional for grounded answers' }}</small></div>
+      <button type="button" (click)="openKnowledge()">Manage</button>
+    </article>
   </div>
 
   <div class="quick-actions" aria-label="Quick actions">
-    <button type="button" class="primary" (click)="startChat()">Start new chat</button>
-    <button type="button" (click)="openPrompts()">Use a prompt</button>
-    <button type="button" (click)="openKnowledge()">Open knowledge base</button>
+    <button type="button" class="primary" (click)="startChat()" [disabled]="!localAi.ready()">Start chat</button>
+    <button type="button" (click)="openPrompts()">Browse workflows</button>
   </div>
 </section>

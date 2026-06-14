@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewChecked, ChangeDetectionStrategy, Component, ElementRef, HostListener, computed, inject, input } from '@angular/core';
 import { Conversation } from '../../../../core/models/chat.models';
+import { ChatStoreService } from '../../../../core/services/chat-store.service';
 import { SettingsStoreService } from '../../../../core/services/settings-store.service';
 import { AiAvatarComponent } from '../ai-avatar/ai-avatar.component';
 import { ChatWelcomeComponent } from '../chat-welcome/chat-welcome.component';
@@ -14,6 +15,7 @@ import { ChatWelcomeComponent } from '../chat-welcome/chat-welcome.component';
 })
 export class MessageListComponent implements AfterViewChecked {
   private readonly settingsStore = inject(SettingsStoreService);
+  private readonly chatStore = inject(ChatStoreService);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private lastScrollSignature = '';
   private lastConversationId: string | null = null;
@@ -32,6 +34,14 @@ export class MessageListComponent implements AfterViewChecked {
 
     return initials || 'U';
   });
+
+  copy(content: string): void {
+    void navigator.clipboard?.writeText(content);
+  }
+
+  regenerate(messageId: string): void {
+    void this.chatStore.regenerate(messageId);
+  }
 
   ngAfterViewChecked(): void {
     const conversation = this.conversation();
