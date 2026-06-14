@@ -49,7 +49,7 @@
         <h2 id="files-title">Indexed workspace sources</h2>
       </div>
       <div class="file-tools">
-        <input type="search" [ngModel]="search()" (ngModelChange)="search.set($event)" placeholder="Search files..." aria-label="Search knowledge files" />
+        <input type="search" [ngModel]="search()" (ngModelChange)="setSearch($event)" placeholder="Search files..." aria-label="Search knowledge files" />
         @if (search() || selectedCollection()) {
           <button type="button" (click)="clearFilters()">Clear</button>
         }
@@ -60,13 +60,20 @@
       @if (filteredFiles().length) {
         <div class="file-list" aria-label="Uploaded files">
         @for (file of filteredFiles(); track file.id) {
-          <app-knowledge-file-card
-            [file]="file"
-            [collection]="collectionForFile(file)"
-            [collections]="knowledgeStore.collections"
-            (collectionChange)="updateCollection(file.id, $event)"
-            (remove)="knowledgeStore.removeFile($event)"
-          />
+          <div
+            class="file-focus-target"
+            [class.focused]="focusedFileId() === file.id"
+            [id]="'knowledge-file-' + file.id"
+            tabindex="-1"
+          >
+            <app-knowledge-file-card
+              [file]="file"
+              [collection]="collectionForFile(file)"
+              [collections]="knowledgeStore.collections"
+              (collectionChange)="updateCollection(file.id, $event)"
+              (remove)="knowledgeStore.removeFile($event)"
+            />
+          </div>
         }
         </div>
       } @else {

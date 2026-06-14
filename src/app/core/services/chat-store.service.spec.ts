@@ -69,6 +69,32 @@ describe('ChatStoreService', () => {
       { kind: 'collection', collection: 'Engineering' },
     );
     expect(store.selectedConversation()?.messages.at(-1)?.sourceScopeLabel).toBe('Engineering');
+    expect(store.selectedConversation()?.messages.at(-1)?.sourceUsage).toBe('grounded');
+  });
+
+  it('marks a selected scope without matches as a general fallback', async () => {
+    retrieval.retrieve.mockResolvedValue({ context: '', sources: [] });
+    const store = TestBed.inject(ChatStoreService);
+    store.setSourceScope({ kind: 'collection', collection: 'Engineering' });
+
+    await store.sendMessage('What is the launch date?');
+
+    const assistant = store.selectedConversation()?.messages.at(-1);
+    expect(assistant?.sourceScopeLabel).toBe('Engineering');
+    expect(assistant?.sourceUsage).toBe('no-match');
+    expect(ai.generate.mock.calls.at(-1)?.[0][0].content).toContain(
+      'never claim or imply that the answer is source-grounded',
+    );
+  });
+
+  it('marks retrieval-disabled answers as general knowledge', async () => {
+    retrieval.retrieve.mockResolvedValue({ context: '', sources: [] });
+    const store = TestBed.inject(ChatStoreService);
+    store.setSourceScope({ kind: 'none' });
+
+    await store.sendMessage('What is two plus two?');
+
+    expect(store.selectedConversation()?.messages.at(-1)?.sourceUsage).toBe('general');
   });
 
   it('reuses the previous user message when regenerating', async () => {

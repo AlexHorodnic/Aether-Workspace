@@ -1,6 +1,8 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { KnowledgeFile } from '../../../../core/models/knowledge-file.model';
 import { KnowledgeStoreService } from '../../../../core/services/knowledge-store.service';
 import { ActivityFeedComponent } from '../../components/activity-feed/activity-feed.component';
@@ -32,9 +34,13 @@ const COLLECTIONS: Array<Omit<KnowledgeCollection, 'fileCount' | 'indexedCount'>
 })
 export class KnowledgeBasePageComponent {
   readonly knowledgeStore = inject(KnowledgeStoreService);
+  private readonly document = inject(DOCUMENT);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   readonly dragging = signal(false);
   readonly search = signal('');
   readonly selectedCollection = signal<string | null>(null);
+  readonly focusedFileId = signal<string | null>(null);
   readonly collections = computed<KnowledgeCollection[]>(() => COLLECTIONS.map((collection) => {
     const files = this.knowledgeStore.files().filter((file) => this.collectionForFile(file) === collection.name);
     return {
@@ -46,6 +52,11 @@ export class KnowledgeBasePageComponent {
 
   readonly activeCollectionCount = computed(() => this.collections().filter((collection) => collection.fileCount > 0).length);
   readonly filteredFiles = computed(() => {
+    const focusedFileId = this.focusedFileId();
+    if (focusedFileId) {
+      return this.knowledgeStore.files().filter((file) => file.id === focusedFileId);
+    }
+
     const query = this.search().trim().toLowerCase();
     const collection = this.selectedCollection();
     return this.knowledgeStore.files().filter((file) => (
@@ -57,6 +68,22 @@ export class KnowledgeBasePageComponent {
   readonly collectionForFile = (file: KnowledgeFile): string => {
     return file.collection;
   };
+
+  constructor() {
+    this.route.queryParamMap.pipe(takeUntilDestroyed()).subscribe((params) => {
+      const fileId = params.get('file');
+      const file = this.knowledgeStore.files().find((item) => item.id === fileId);
+      if (!file) {
+        this.focusedFileId.set(null);
+        return;
+      }
+
+      this.selectedCollection.set(null);
+      this.search.set('');
+      this.focusedFileId.set(file.id);
+      window.setTimeout(() => this.focusFile(file.id), 0);
+    });
+  }
 
   onDragOver(event: DragEvent): void {
     event.preventDefault();
@@ -89,11 +116,35 @@ export class KnowledgeBasePageComponent {
   }
 
   selectCollection(collection: string): void {
+    this.clearFocusedFile();
     this.selectedCollection.update((current) => current === collection ? null : collection);
+  }
+
+  setSearch(value: string): void {
+    this.clearFocusedFile();
+    this.search.set(value);
   }
 
   clearFilters(): void {
     this.search.set('');
     this.selectedCollection.set(null);
+    this.clearFocusedFile();
+  }
+
+  private focusFile(fileId: string): void {
+    const element = this.document.getElementById(`knowledge-file-${fileId}`);
+    element?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    element?.focus({ preventScroll: true });
+  }
+
+  private clearFocusedFile(): void {
+    if (!this.focusedFileId()) return;
+    this.focusedFileId.set(null);
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { file: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
   }
 }

@@ -8,6 +8,7 @@ export interface MessageSource {
 }
 
 export type SourceScopeKind = 'all' | 'none' | 'collection';
+export type SourceUsage = 'grounded' | 'general' | 'no-match';
 
 export interface SourceScope {
   kind: SourceScopeKind;
@@ -22,6 +23,7 @@ export interface ChatMessage {
   status: MessageStatus;
   sources?: MessageSource[];
   sourceScopeLabel?: string;
+  sourceUsage?: SourceUsage;
 }
 
 export interface Conversation {

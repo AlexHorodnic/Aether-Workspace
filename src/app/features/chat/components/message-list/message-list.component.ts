@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewChecked, ChangeDetectionStrategy, Component, ElementRef, HostListener, computed, inject, input } from '@angular/core';
-import { Conversation } from '../../../../core/models/chat.models';
+import { ChatMessage, Conversation } from '../../../../core/models/chat.models';
 import { ChatStoreService } from '../../../../core/services/chat-store.service';
 import { SettingsStoreService } from '../../../../core/services/settings-store.service';
 import { AiAvatarComponent } from '../ai-avatar/ai-avatar.component';
@@ -41,6 +41,20 @@ export class MessageListComponent implements AfterViewChecked {
 
   regenerate(messageId: string): void {
     void this.chatStore.regenerate(messageId);
+  }
+
+  sourceUsageLabel(message: ChatMessage): string {
+    if (message.sourceUsage === 'grounded') {
+      const count = message.sources?.length ?? 0;
+      return `${count} ${count === 1 ? 'source' : 'sources'} used`;
+    }
+    if (message.sourceUsage === 'no-match') {
+      const scope = message.sourceScopeLabel === 'All indexed sources'
+        ? 'indexed'
+        : message.sourceScopeLabel;
+      return `No matching ${scope ?? 'workspace'} sources; general answer`;
+    }
+    return 'General knowledge only';
   }
 
   ngAfterViewChecked(): void {

@@ -1,6 +1,10 @@
 # Aether Workspace
 
+[![CI](https://github.com/AlexHorodnic/Aether-Workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/AlexHorodnic/Aether-Workspace/actions/workflows/ci.yml)
+
 A privacy-first AI workspace that runs an open-source language model directly in the browser. Aether combines local streaming chat, reusable prompt templates, and document-grounded answers without sending prompts or files to an application server.
+
+**Live app:** https://aether-workspace-kohl.vercel.app/
 
 ## Why it is different
 
@@ -8,6 +12,7 @@ A privacy-first AI workspace that runs an open-source language model directly in
 - **No exposed API key:** there is no shared AI endpoint or browser credential to steal.
 - **Private knowledge retrieval:** PDF and text content is extracted locally, chunked, and stored in IndexedDB.
 - **Cited answers:** relevant chunks are selected locally and included as named sources in chat.
+- **Inspectable grounding:** answers distinguish cited sources, general-knowledge mode, and source scopes where no document matched.
 - **Abuse-resistant architecture:** compute cost belongs to each device, while prompt length, duplicate, cooldown, and per-minute limits prevent accidental local spam.
 
 ## Local model profiles
@@ -28,7 +33,12 @@ Gemma 3 4B is not listed because it is not currently available in WebLLM's suppo
 1. Activate the local model from Chat. The first run downloads model assets and caches them in the browser.
 2. Add PDF, Markdown, text, CSV, JSON, or source-code files in Knowledge.
 3. Assign sources to workspace collections.
-4. Ask a question. Aether retrieves matching local chunks and streams a source-grounded response.
+4. Choose all indexed sources, one collection, or general knowledge only.
+5. Ask a question. Aether retrieves matching local chunks and streams the response.
+
+When a selected source scope has no match, Aether labels the response as a general answer rather than implying that it was grounded. Global search opens matching conversations, prompts, and files; file results focus the exact item in Knowledge.
+
+Prompt templates open as editable chat drafts instead of sending placeholder text. Settings use an explicit draft, Save, and Discard workflow so model, theme, identity, and response changes never apply accidentally.
 
 ## Architecture
 
@@ -62,13 +72,16 @@ npm run build
 npm audit --omit=dev
 ```
 
+The deployed build has also been exercised in a real WebGPU Chrome session: local model activation, streaming, Stop and Regenerate, reasoning sanitization, clipboard output, source-scoped retrieval, citations, settings persistence, model fallback, responsive layouts, keyboard focus, and local document indexing all passed. Browser network inspection showed no document uploads or application API POST requests; only application assets and expected WebLLM model downloads were requested.
+
 ## Privacy and limitations
 
 - Documents, prompts, and conversations remain in the current browser profile.
 - Model files are downloaded from the WebLLM/Hugging Face distribution used by the library.
 - WebGPU support, model availability, download size, and generation speed depend on the browser and device GPU.
 - Local models are less capable than large hosted models and can still produce inaccurate output.
-- Retrieval is intentionally lightweight and local; it is not a hosted vector database.
+- Retrieval is intentionally lightweight lexical ranking, not semantic embeddings or a hosted vector database.
+- A question can have no matching local source. In that case Aether clearly marks the result as a general answer.
 - Clearing browser site data removes stored workspace content.
 
 ## Security

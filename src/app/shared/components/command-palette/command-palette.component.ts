@@ -273,7 +273,7 @@ export class CommandPaletteComponent {
       kind: 'File',
       section: 'Knowledge',
       icon: 'file',
-      run: () => void this.router.navigate(['/knowledge']),
+      run: () => void this.router.navigate(['/knowledge'], { queryParams: { file: file.id } }),
     }));
 
     return [...actions, ...conversations, ...prompts, ...files];

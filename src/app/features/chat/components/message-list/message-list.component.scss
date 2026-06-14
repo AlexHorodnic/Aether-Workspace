@@ -107,6 +107,11 @@ p {
   font-size: 0.72rem;
 }
 
+.answer-meta.no-match > span {
+  color: var(--color-amber);
+  font-weight: 760;
+}
+
 .answer-meta div {
   display: flex;
   gap: 0.35rem;
