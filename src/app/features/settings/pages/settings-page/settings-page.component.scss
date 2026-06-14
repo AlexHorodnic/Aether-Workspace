@@ -88,7 +88,7 @@ button {
 }
 
 .discard { background: var(--color-surface-soft); }
-.save { background: var(--gradient-brand); color: #160b1f; box-shadow: var(--shadow-glow); }
+.save { background: var(--gradient-brand); color: var(--color-on-brand); box-shadow: var(--shadow-glow); }
 button:disabled { cursor: not-allowed; opacity: 0.38; box-shadow: none; }
 
 .settings-grid {
@@ -108,7 +108,13 @@ button:disabled { cursor: not-allowed; opacity: 0.38; box-shadow: none; }
   border-radius: var(--radius-xl);
 }
 
-.card-heading,
+.card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.55rem;
+}
+
 .models-heading {
   display: flex;
   align-items: center;
@@ -126,7 +132,7 @@ button:disabled { cursor: not-allowed; opacity: 0.38; box-shadow: none; }
   height: 3.1rem;
   border-radius: 1rem;
   background: var(--gradient-brand);
-  color: #160b1f;
+  color: var(--color-on-brand);
   font-size: 1.2rem;
   font-weight: 950;
   box-shadow: var(--shadow-glow);
@@ -251,20 +257,10 @@ select {
 }
 
 .mode-status {
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
 }
 .mode-status > div { display: grid; gap: 0.12rem; }
-.mode-icon {
-  display: grid;
-  place-items: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 0.7rem;
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
-  font-weight: 950;
-}
 .mode-status p,
 .model-note p,
 .online-note p { color: var(--color-text-muted); font-size: 0.7rem; line-height: 1.4; }

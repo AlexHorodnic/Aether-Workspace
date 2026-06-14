@@ -132,7 +132,7 @@ button {
 button.primary {
   border-color: color-mix(in srgb, var(--color-primary) 55%, transparent);
   background: var(--gradient-brand);
-  color: #160b1f;
+  color: var(--color-on-brand);
 }
 
 button:hover {

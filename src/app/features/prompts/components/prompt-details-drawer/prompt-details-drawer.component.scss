@@ -146,7 +146,7 @@ pre {
 }
 
 .secondary-action { background: var(--color-surface-soft); color: var(--color-text-muted); }
-.primary-action { background: var(--gradient-brand); color: #160b1f; }
+.primary-action { background: var(--gradient-brand); color: var(--color-on-brand); }
 button:focus-visible { outline: 0; box-shadow: 0 0 0 3px var(--color-primary-soft); }
 
 @keyframes modal-in {

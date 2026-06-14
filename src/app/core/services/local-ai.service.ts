@@ -1,6 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import type { ChatCompletionMessageParam, WebWorkerMLCEngine } from '@mlc-ai/web-llm';
 import { modelProfile, ModelProfile } from '../models/settings.model';
+import { StreamingResponseSanitizer } from '../utils/response-sanitizer.util';
 import { SettingsStoreService } from './settings-store.service';
 
 export type LocalAiState = 'unsupported' | 'idle' | 'loading' | 'ready' | 'generating' | 'error';
@@ -74,6 +75,7 @@ export class LocalAiService {
 
     this.stateValue.set('generating');
     this.statusTextValue.set('Generating locally...');
+    const sanitizer = new StreamingResponseSanitizer();
     let content = '';
     try {
       const stream = await this.engine.chat.completions.create({
@@ -83,9 +85,14 @@ export class LocalAiService {
         stream: true,
       });
       for await (const chunk of stream) {
-        content += chunk.choices[0]?.delta.content ?? '';
-        onChunk(content);
+        const visible = sanitizer.push(chunk.choices[0]?.delta.content ?? '');
+        if (visible !== content) {
+          content = visible;
+          onChunk(content);
+        }
       }
+      content = sanitizer.finish().trim();
+      onChunk(content);
       return content.trim();
     } finally {
       this.stateValue.set('ready');

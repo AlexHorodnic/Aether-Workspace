@@ -150,6 +150,14 @@ h2 {
   overflow: hidden;
 }
 
+.knowledge-bottom:has(.knowledge-empty) {
+  align-items: start;
+}
+
+.knowledge-bottom:has(.knowledge-empty) .files-section {
+  grid-template-rows: auto auto;
+}
+
 .knowledge-bottom > app-activity-feed {
   min-height: 0;
   overflow: hidden;
@@ -212,7 +220,7 @@ h2 {
   border-radius: 999px;
   padding-inline: 1rem;
   background: var(--gradient-brand);
-  color: #160b1f;
+  color: var(--color-on-brand);
   cursor: pointer;
   font-weight: 820;
 }

@@ -81,4 +81,12 @@ describe('ChatStoreService', () => {
     expect(ai.generate).toHaveBeenCalledTimes(2);
     expect(store.selectedConversation()?.messages.at(-1)?.content).toBe('Final answer');
   });
+
+  it('creates a short intent title instead of copying the user message', async () => {
+    const store = TestBed.inject(ChatStoreService);
+
+    await store.sendMessage('Could you please explain how Angular signals work in this application?');
+
+    expect(store.selectedConversation()?.title).toBe('Angular Signals Application Overview');
+  });
 });
